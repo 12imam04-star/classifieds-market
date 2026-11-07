@@ -50,18 +50,19 @@ import {
 } from 'lucide-react';
 
 export const App: React.FC = () => {
-  // Clear any legacy storage from previous builds
+  // Clear any legacy storage
   useEffect(() => {
     try {
-      localStorage.removeItem('avitox_listings');
-      localStorage.removeItem('avitox_favorites');
+      localStorage.removeItem('legacy_listings');
+      localStorage.removeItem('legacy_favorites');
     } catch (e) {}
   }, []);
 
-  // Theme state
-  const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem('theme') === 'dark' || 
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Theme state: default true (Dark luxury theme)
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved === 'dark';
+    return true;
   });
 
   useEffect(() => {
@@ -148,7 +149,7 @@ export const App: React.FC = () => {
         showToast('Убрано с избранной полки');
         return prev.filter(item => item !== id);
       } else {
-        showToast('Добавлено на избранную полку ❤️');
+        showToast('Добавлено в избранное ❤️');
         return [...prev, id];
       }
     });
@@ -267,11 +268,11 @@ export const App: React.FC = () => {
   }, [listings]);
 
   return (
-    <div className="min-h-screen flex flex-col transition-colors pb-16 md:pb-0">
+    <div className="min-h-screen flex flex-col bg-[#070a13] text-slate-100 transition-colors pb-16 md:pb-0">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-20 md:bottom-8 right-6 z-50 px-4 py-3 rounded-2xl bg-slate-900 text-white dark:bg-amber-500 dark:text-slate-950 shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-bold animate-in slide-in-from-bottom-5">
-          <Bell className="w-4 h-4 text-amber-400 dark:text-slate-950" />
+        <div className="fixed bottom-20 md:bottom-8 right-6 z-50 px-4 py-3 rounded-2xl bg-[#101726] text-white border border-[#1f2d47] shadow-2xl shadow-blue-500/20 flex items-center gap-2.5 text-xs sm:text-sm font-bold animate-in slide-in-from-bottom-5">
+          <Bell className="w-4 h-4 text-blue-400" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -302,39 +303,43 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* Hero Welcome Banner */}
+      {/* Hero Welcome Banner (Gradient Cyber-Showcase Luxe) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 w-full">
-        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-800 text-white shadow-xl shadow-amber-500/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-slate-800">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-[11px] font-black border border-amber-500/30">
-                ПОЛКА • всё по полочкам
+        <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white shadow-2xl shadow-indigo-600/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 border border-white/10 relative overflow-hidden">
+          {/* Ambient light glow */}
+          <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute left-1/3 -top-10 w-56 h-56 bg-purple-400/20 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="space-y-2 z-10">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-black border border-white/20">
+                Витрина объявлений нового поколения
               </span>
-              <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4" />
-                Полка Защита (Escrow 100%)
+              <span className="text-cyan-200 text-xs font-bold flex items-center gap-1">
+                <ShieldCheck className="w-4 h-4 text-cyan-300" />
+                100% Escrow Гарант
               </span>
             </div>
-            <h2 className="text-lg sm:text-2xl font-black tracking-tight">
-              Доска честных бесплатных объявлений
+            <h2 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
+              Витрина бесплатных объявлений с 100% безопасной сделкой (Escrow)
             </h2>
-            <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-              Выставляйте вещи на Полку бесплатно за минуту. Покупайте надежно с защитой платежа и доставкой по всей России или мгновенной автовыдачей.
+            <p className="text-xs sm:text-sm text-slate-100/90 max-w-2xl leading-relaxed">
+              Публикуйте лоты на Полку бесплатно в пару кликов. Покупайте с гарантией возврата средств, доставкой по всей России или мгновенной автовыдачей цифровых товаров.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-3 shrink-0 z-10">
             <button
               onClick={() => setIsHowItWorksOpen(true)}
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/15"
+              className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-bold transition border border-white/25 backdrop-blur-md"
             >
-              Как работает гарант
+              🛡️ Как работает Полка Защита
             </button>
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black transition shadow-md"
+              className="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-950 text-xs sm:text-sm font-black transition shadow-xl active:scale-95"
             >
-              + Поставить на Полку
+              + Разместить бесплатно
             </button>
           </div>
         </div>
@@ -343,82 +348,82 @@ export const App: React.FC = () => {
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1 space-y-4">
         
-        {/* Quick Filter Chips & View Mode Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200/70 dark:border-slate-800">
+        {/* Section Header: Title & Quick Filter Chips & View Mode */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1f2d47]">
           {/* Quick interactive chips */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
             <button
               onClick={() => handleQuickFilterToggle('safe_deal')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 active:scale-95 ${
                 filters.quickFilter === 'safe_deal'
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-emerald-500'
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30'
+                  : 'bg-[#101726] border border-[#1f2d47] text-slate-300 hover:border-emerald-500/50'
               }`}
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Полка Защита</span>
             </button>
 
             <button
               onClick={() => handleQuickFilterToggle('instant')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 active:scale-95 ${
                 filters.quickFilter === 'instant'
-                  ? 'bg-purple-600 text-white shadow-sm'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-purple-500'
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                  : 'bg-[#101726] border border-[#1f2d47] text-slate-300 hover:border-purple-500/50'
               }`}
             >
-              <Zap className="w-3.5 h-3.5 text-purple-500" />
+              <Zap className="w-3.5 h-3.5 text-purple-400" />
               <span>Автовыдача</span>
             </button>
 
             <button
               onClick={() => handleQuickFilterToggle('vip')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 active:scale-95 ${
                 filters.quickFilter === 'vip'
-                  ? 'bg-amber-500 text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-500'
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/30'
+                  : 'bg-[#101726] border border-[#1f2d47] text-slate-300 hover:border-amber-500/50'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>VIP лоты</span>
             </button>
 
             <button
               onClick={() => handleQuickFilterToggle('free')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 active:scale-95 ${
                 filters.quickFilter === 'free'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-blue-500'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-[#101726] border border-[#1f2d47] text-slate-300 hover:border-blue-500/50'
               }`}
             >
-              <Gift className="w-3.5 h-3.5 text-blue-500" />
+              <Gift className="w-3.5 h-3.5 text-blue-400" />
               <span>Даром (0 ₽)</span>
             </button>
 
             <button
               onClick={() => handleQuickFilterToggle('top_rated')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 active:scale-95 ${
                 filters.quickFilter === 'top_rated'
-                  ? 'bg-amber-500 text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-500'
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/30'
+                  : 'bg-[#101726] border border-[#1f2d47] text-slate-300 hover:border-amber-500/50'
               }`}
             >
-              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               <span>Рейтинг 4.95+</span>
             </button>
           </div>
 
-          {/* View mode buttons: Grid vs List */}
-          <div className="flex items-center gap-1 shrink-0 self-end sm:self-auto">
-            <span className="text-xs text-slate-400 mr-2">
-              {filteredListings.length} {filteredListings.length === 1 ? 'лот' : 'лотов'}
+          {/* View mode switcher */}
+          <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+            <span className="text-xs text-slate-400 mr-1.5">
+              {filteredListings.length} {filteredListings.length === 1 ? 'объявление' : filteredListings.length < 5 ? 'объявления' : 'объявлений'}
             </span>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition ${
+              className={`p-1.5 rounded-xl transition ${
                 viewMode === 'grid'
-                  ? 'bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950'
-                  : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                  : 'text-slate-400 hover:bg-[#162035]'
               }`}
               title="Сетка"
             >
@@ -426,10 +431,10 @@ export const App: React.FC = () => {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition ${
+              className={`p-1.5 rounded-xl transition ${
                 viewMode === 'list'
-                  ? 'bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950'
-                  : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                  : 'text-slate-400 hover:bg-[#162035]'
               }`}
               title="Список"
             >
@@ -452,13 +457,20 @@ export const App: React.FC = () => {
 
           {/* Listings Feed */}
           <div className="lg:col-span-3">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+                <span>Рекомендации для вас</span>
+                <span className="text-xs font-normal text-slate-400">({filteredListings.length} объявлений)</span>
+              </h2>
+            </div>
+
             {filteredListings.length === 0 ? (
-              <div className="p-12 rounded-3xl bg-white dark:bg-[#151d2e] border border-slate-200/80 dark:border-slate-800 text-center space-y-4 shadow-sm">
-                <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mx-auto">
-                  <SearchX className="w-8 h-8" />
+              <div className="p-12 rounded-2xl bg-[#101726] border border-[#1f2d47] text-center space-y-4 shadow-xl">
+                <div className="w-16 h-16 rounded-full bg-[#162035] text-slate-400 flex items-center justify-center mx-auto border border-[#22324e]">
+                  <SearchX className="w-8 h-8 text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  <h3 className="text-base font-bold text-white">
                     На этой полке пока пусто
                   </h3>
                   <p className="text-xs text-slate-400 max-w-sm mx-auto mt-1">
@@ -467,7 +479,7 @@ export const App: React.FC = () => {
                 </div>
                 <button
                   onClick={handleResetFilters}
-                  className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-sm transition"
+                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition"
                 >
                   Сбросить все фильтры
                 </button>
@@ -495,45 +507,45 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#0f172a] text-xs text-slate-500 dark:text-slate-400 py-8 px-4 sm:px-6 transition-colors">
+      <footer className="mt-auto border-t border-[#1b263b] bg-[#0a0f1d] text-xs text-slate-400 py-8 px-4 sm:px-6 transition-colors">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 text-xs font-black">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white text-xs font-black shadow-md">
               П
             </div>
-            <span className="font-extrabold text-slate-900 dark:text-white">ПОЛКА</span>
-            <span>• всё по полочкам</span>
+            <span className="font-extrabold text-white">ПОЛКА PRO</span>
+            <span className="text-slate-500">• всё по полочкам</span>
           </div>
-          <div className="flex flex-wrap gap-4 text-xs">
-            <button onClick={() => setIsHowItWorksOpen(true)} className="hover:text-amber-500 font-semibold">
+          <div className="flex flex-wrap gap-4 text-xs text-slate-400">
+            <button onClick={() => setIsHowItWorksOpen(true)} className="hover:text-blue-400 font-semibold transition">
               Полка Защита (Escrow)
             </button>
-            <a href="#" className="hover:text-amber-500">Правила размещения лотов</a>
-            <a href="#" className="hover:text-amber-500">Доставка по России</a>
-            <a href="#" className="hover:text-amber-500">Служба арбитража</a>
+            <a href="#" className="hover:text-blue-400 transition">Правила размещения лотов</a>
+            <a href="#" className="hover:text-blue-400 transition">Доставка по России</a>
+            <a href="#" className="hover:text-blue-400 transition">Служба арбитража</a>
           </div>
-          <div className="text-[11px] text-slate-400">
-            © 2026 ПОЛКА МАРКЕТ. Все права защищены.
+          <div className="text-[11px] text-slate-500">
+            © 2026 ПОЛКА PRO. Все права защищены.
           </div>
         </div>
       </footer>
 
       {/* Mobile Bottom Navigation Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-3 flex items-center justify-around text-[10px] font-semibold text-slate-600 dark:text-slate-400">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f1d]/95 backdrop-blur-xl border-t border-[#1b263b] py-2 px-3 flex items-center justify-around text-[10px] font-semibold text-slate-400">
         <button
           onClick={() => {
             setViewOnlyFavorites(false);
             setFilters(prev => ({ ...prev, category: 'all' }));
           }}
-          className="flex flex-col items-center gap-1 hover:text-amber-600 dark:hover:text-amber-400"
+          className="flex flex-col items-center gap-1 hover:text-blue-400"
         >
-          <Home className="w-5 h-5" />
+          <Home className="w-5 h-5 text-blue-400" />
           <span>Полка</span>
         </button>
 
         <button
           onClick={() => setViewOnlyFavorites(true)}
-          className={`flex flex-col items-center gap-1 relative ${viewOnlyFavorites ? 'text-amber-600 dark:text-amber-400' : ''}`}
+          className={`flex flex-col items-center gap-1 relative ${viewOnlyFavorites ? 'text-blue-400' : ''}`}
         >
           <Heart className="w-5 h-5" />
           <span>Избранное</span>
@@ -546,9 +558,9 @@ export const App: React.FC = () => {
 
         <button
           onClick={() => setIsCreateOpen(true)}
-          className="flex flex-col items-center gap-1 text-amber-600 dark:text-amber-400 font-bold"
+          className="flex flex-col items-center gap-1 text-blue-400 font-bold"
         >
-          <div className="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center -mt-3 shadow-md shadow-amber-500/30 font-black">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center -mt-3 shadow-lg shadow-blue-500/30 font-black">
             <PlusCircle className="w-5 h-5" />
           </div>
           <span>Подать</span>
@@ -556,15 +568,15 @@ export const App: React.FC = () => {
 
         <button
           onClick={() => setIsHowItWorksOpen(true)}
-          className="flex flex-col items-center gap-1 hover:text-amber-600 dark:hover:text-amber-400"
+          className="flex flex-col items-center gap-1 hover:text-blue-400"
         >
-          <ShieldCheck className="w-5 h-5" />
+          <ShieldCheck className="w-5 h-5 text-emerald-400" />
           <span>Защита</span>
         </button>
 
         <button
           onClick={() => setIsProfileOpen(true)}
-          className="flex flex-col items-center gap-1 hover:text-amber-600 dark:hover:text-amber-400"
+          className="flex flex-col items-center gap-1 hover:text-blue-400"
         >
           <User className="w-5 h-5" />
           <span>Профиль</span>

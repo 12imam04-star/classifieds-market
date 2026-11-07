@@ -9,15 +9,28 @@ export default {
     extend: {
       colors: {
         brand: {
-          indigo: '#1e1b4b',
-          amber: '#f59e0b',
-          amberDark: '#d97706',
+          bg: '#070a13',
+          card: '#101726',
+          cardHover: '#141d30',
+          border: '#1f2d47',
+          borderLight: '#2a3b5c',
+          blue: '#2563eb',
+          blueHover: '#1d4ed8',
+          cyan: '#06b6d4',
+          purple: '#7c3aed',
           emerald: '#10b981',
-          darkBg: '#0b0f19',
-          darkCard: '#151d2e',
-          darkBorder: '#232f45',
-          cream: '#fcfbf9'
+          gold: '#f59e0b',
+          rose: '#f43f5e'
         }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      boxShadow: {
+        'glow-blue': '0 0 25px -5px rgba(37, 99, 235, 0.35)',
+        'glow-purple': '0 0 25px -5px rgba(124, 58, 237, 0.35)',
+        'glow-emerald': '0 0 20px -5px rgba(16, 185, 129, 0.35)',
+        'glow-gold': '0 0 20px -5px rgba(245, 158, 11, 0.35)',
       }
     },
   },

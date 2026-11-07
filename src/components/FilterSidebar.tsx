@@ -17,18 +17,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   totalFound,
 }) => {
   return (
-    <div className="bg-white dark:bg-[#151d2e] rounded-3xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-sm space-y-6">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700/60">
-        <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
-          <Filter className="w-4 h-4 text-amber-500" />
-          <span>Фильтры Полки</span>
-          <span className="text-xs font-normal text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+    <div className="bg-[#101726] rounded-2xl border border-[#1f2d47] p-4 sm:p-5 shadow-xl space-y-5">
+      <div className="flex items-center justify-between pb-3 border-b border-[#1f2d47]">
+        <div className="flex items-center gap-2 font-bold text-white text-sm">
+          <Filter className="w-4 h-4 text-blue-400" />
+          <span>Фильтры</span>
+          <span className="text-xs font-normal text-slate-400 bg-[#162035] px-2 py-0.5 rounded-full border border-[#22324e]">
             {totalFound}
           </span>
         </div>
         <button
           onClick={onReset}
-          className="text-xs text-slate-400 hover:text-amber-500 flex items-center gap-1 transition"
+          className="text-xs text-slate-400 hover:text-blue-400 flex items-center gap-1 transition"
         >
           <RotateCcw className="w-3 h-3" />
           Сбросить
@@ -36,32 +36,32 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Sort By */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
-          <ArrowUpDown className="w-3.5 h-3.5 text-amber-500" />
-          Сортировка лотов
+      <div className="space-y-1.5">
+        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+          <ArrowUpDown className="w-3 h-3 text-blue-400" />
+          Сортировка
         </label>
         <select
           value={filters.sortBy}
           onChange={(e) => onChange({ sortBy: e.target.value as any })}
-          className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-blue-500 transition"
         >
-          <option value="date_desc">По дате (свежие на Полке)</option>
-          <option value="price_asc">По возрастанию цены</option>
-          <option value="price_desc">По убыванию цены</option>
+          <option value="date_desc">По дате (свежие первые)</option>
+          <option value="price_asc">Сначала дешевле</option>
+          <option value="price_desc">Сначала дороже</option>
           <option value="rating_desc">По рейтингу продавца</option>
         </select>
       </div>
 
       {/* City */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Город / Локация
+      <div className="space-y-1.5">
+        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          Город / локация
         </label>
         <select
           value={filters.city}
           onChange={(e) => onChange({ city: e.target.value })}
-          className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-blue-500 transition"
         >
           {CITIES.map((c) => (
             <option key={c} value={c}>
@@ -72,9 +72,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Price Range */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Цена лота, ₽
+      <div className="space-y-1.5">
+        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          Цена, ₽
         </label>
         <div className="flex items-center gap-2">
           <input
@@ -82,42 +82,46 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             placeholder="От"
             value={filters.minPrice ?? ''}
             onChange={(e) => onChange({ minPrice: e.target.value ? Number(e.target.value) : undefined })}
-            className="w-1/2 px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-1/2 px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
           />
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-slate-500 text-xs">—</span>
           <input
             type="number"
             placeholder="До"
             value={filters.maxPrice ?? ''}
             onChange={(e) => onChange({ maxPrice: e.target.value ? Number(e.target.value) : undefined })}
-            className="w-1/2 px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-1/2 px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
           />
         </div>
       </div>
 
       {/* Condition */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+      <div className="space-y-1.5">
+        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
           Состояние
         </label>
-        <div className="space-y-1.5 text-xs sm:text-sm">
+        <div className="space-y-1 text-xs">
           {[
             { id: 'all', label: 'Любое состояние' },
             { id: 'new', label: 'Новое (в упаковке)' },
-            { id: 'perfect', label: 'Идеальное' },
+            { id: 'perfect', label: 'Идеальное / Близко к новому' },
             { id: 'used', label: 'Б/У' },
             { id: 'digital', label: 'Цифровой товар / Ключ' },
           ].map((cond) => (
             <label
               key={cond.id}
-              className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 cursor-pointer text-slate-700 dark:text-slate-300"
+              className={`flex items-center gap-2.5 p-2 rounded-xl cursor-pointer transition ${
+                filters.condition === cond.id 
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold' 
+                  : 'text-slate-300 hover:bg-[#162035]'
+              }`}
             >
               <input
                 type="radio"
                 name="condition"
                 checked={filters.condition === cond.id}
                 onChange={() => onChange({ condition: cond.id })}
-                className="w-4 h-4 text-amber-500 focus:ring-amber-500 dark:bg-slate-900"
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-[#0c1220] border-[#1f2d47]"
               />
               <span>{cond.label}</span>
             </label>
@@ -125,22 +129,22 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
       </div>
 
-      {/* Safe Deal Toggle */}
-      <div className="pt-2 border-t border-slate-100 dark:border-slate-700/60">
-        <label className="flex items-start gap-3 p-3 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-900/40 cursor-pointer transition hover:bg-emerald-50 dark:hover:bg-emerald-950/50">
+      {/* Safe Deal Toggle Card */}
+      <div className="pt-2 border-t border-[#1f2d47]">
+        <label className="flex items-start gap-3 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 cursor-pointer transition hover:bg-emerald-950/60">
           <input
             type="checkbox"
             checked={filters.onlySafeDeal}
             onChange={(e) => onChange({ onlySafeDeal: e.target.checked })}
-            className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 mt-0.5"
+            className="w-4 h-4 text-emerald-500 rounded focus:ring-emerald-500 mt-0.5 bg-[#0c1220] border-emerald-600"
           />
           <div>
-            <div className="text-xs sm:text-sm font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              Полка Защита
+            <div className="text-xs sm:text-sm font-bold text-emerald-300 flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              Безопасная сделка
             </div>
-            <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
-              С резервированием средств (Escrow 100%) и личной проверкой
+            <div className="text-[11px] text-slate-400 leading-tight mt-0.5">
+              100% Escrow Гарант: заморозка средств до проверки и подтверждения товара
             </div>
           </div>
         </label>

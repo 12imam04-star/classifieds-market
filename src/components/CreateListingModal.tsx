@@ -87,7 +87,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
         onlineStatus: 'online',
       },
       specs: {
-        'Полка': CATEGORIES.find(c => c.id === category)?.name || 'Разное',
+        'Категория': CATEGORIES.find(c => c.id === category)?.name || 'Разное',
         'Состояние': condition === 'new' ? 'Новое' : condition === 'perfect' ? 'Идеальное' : condition === 'used' ? 'Б/У' : 'Цифровой товар',
         'Размещение': isVip ? 'VIP Полка' : 'Бесплатное размещение'
       }
@@ -98,24 +98,24 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/80 backdrop-blur-sm overflow-y-auto animate-in fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in">
       <div 
-        className="relative w-full max-w-2xl bg-white dark:bg-[#151d2e] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[92vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-[#101726] rounded-3xl shadow-2xl border border-[#1f2d47] overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-900/50">
+        <div className="p-4 sm:p-6 border-b border-[#1f2d47] flex items-center justify-between bg-[#0c1220]">
           <div>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-              Поставить лот на Полку
+            <h2 className="text-lg sm:text-xl font-black text-white">
+              Разместить объявление на Полке
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Бесплатная публикация объявления за пару кликов
+            <p className="text-xs text-slate-400">
+              Бесплатная публикация лота за пару кликов
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#162035] transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -125,7 +125,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
           {/* Title */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-200">
+            <label className="font-semibold text-slate-200">
               Название объявления / лота <span className="text-rose-500">*</span>
             </label>
             <input
@@ -134,20 +134,20 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               placeholder="Например: Ноутбук MacBook Air M2 или Квартира у парка"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
             />
           </div>
 
           {/* Category & City row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-700 dark:text-slate-200">
-                Категория (Полка)
+              <label className="font-semibold text-slate-200">
+                Категория
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               >
                 {CATEGORIES.filter(c => c.id !== 'all').map((c) => (
                   <option key={c.id} value={c.id}>
@@ -158,13 +158,13 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-700 dark:text-slate-200">
+              <label className="font-semibold text-slate-200">
                 Город размещения
               </label>
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               >
                 {CITIES.filter(c => c !== 'Все города').map((c) => (
                   <option key={c} value={c}>
@@ -178,7 +178,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           {/* Metro & Price row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-700 dark:text-slate-200">
+              <label className="font-semibold text-slate-200">
                 Метро / Район (необязательно)
               </label>
               <input
@@ -186,12 +186,12 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 placeholder="Например: Арбатская или Центр"
                 value={metro}
                 onChange={(e) => setMetro(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-700 dark:text-slate-200">
+              <label className="font-semibold text-slate-200">
                 Цена (₽) <span className="text-slate-400 font-normal">(0 = Бесплатно / Даром)</span>
               </label>
               <input
@@ -200,14 +200,14 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 placeholder="0 ₽"
                 value={price}
                 onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
 
           {/* Condition */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-200">
+            <label className="font-semibold text-slate-200">
               Состояние
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -223,8 +223,8 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                   onClick={() => setCondition(c.id as any)}
                   className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition ${
                     condition === c.id
-                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 font-bold'
-                      : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50'
+                      ? 'border-blue-500 bg-blue-600/20 text-blue-300 font-bold'
+                      : 'border-[#1f2d47] bg-[#0c1220] text-slate-300 hover:bg-[#162035]'
                   }`}
                 >
                   {c.label}
@@ -235,7 +235,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
 
           {/* Photos */}
           <div className="space-y-2">
-            <label className="font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-between">
+            <label className="font-semibold text-slate-200 flex items-center justify-between">
               <span>Фотографии лота</span>
               <span className="text-xs text-slate-400 font-normal">Добавлено: {images.length}</span>
             </label>
@@ -243,7 +243,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             {/* Current photos previews */}
             <div className="flex gap-2 flex-wrap">
               {images.map((img, idx) => (
-                <div key={idx} className="relative w-20 h-16 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+                <div key={idx} className="relative w-20 h-16 rounded-xl overflow-hidden border border-[#1f2d47] group">
                   <img src={img} alt="" className="w-full h-full object-cover" />
                   <button
                     type="button"
@@ -256,32 +256,32 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               ))}
             </div>
 
-            {/* Custom URL or Preset selector */}
+            {/* Custom URL */}
             <div className="flex gap-2">
               <input
                 type="url"
                 placeholder="Вставьте ссылку на изображение (URL)..."
                 value={customImageUrl}
                 onChange={(e) => setCustomImageUrl(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="flex-1 px-3 py-2 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-xs text-white focus:outline-none focus:border-blue-500"
               />
               <button
                 type="button"
                 onClick={handleAddCustomImage}
-                className="px-3 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-xs font-semibold rounded-xl text-slate-800 dark:text-slate-200 transition"
+                className="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-xs font-semibold rounded-xl text-white transition"
               >
                 Добавить
               </button>
             </div>
 
-            <div className="flex items-center gap-1.5 overflow-x-auto text-xs text-slate-500 pt-1">
+            <div className="flex items-center gap-1.5 overflow-x-auto text-xs text-slate-400 pt-1">
               <span>Или выберите образец:</span>
               {PRESET_SAMPLE_PHOTOS.slice(1, 4).map((preset, idx) => (
                 <button
                   type="button"
                   key={idx}
                   onClick={() => handleAddSampleImage(preset)}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 text-[11px] text-amber-600 dark:text-amber-400"
+                  className="px-2 py-0.5 rounded-md bg-[#0c1220] hover:bg-[#162035] border border-[#1f2d47] text-[11px] text-blue-400"
                 >
                   Фото {idx + 1}
                 </button>
@@ -291,7 +291,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
 
           {/* Description */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-200">
+            <label className="font-semibold text-slate-200">
               Описание лота
             </label>
             <textarea
@@ -299,16 +299,16 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               placeholder="Расскажите подробнее о товаре, комплектации, причинах продажи и нюансах..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
             />
           </div>
 
           {/* Safe Deal & VIP switches */}
-          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/30 cursor-pointer">
+          <div className="space-y-2 pt-2 border-t border-[#1f2d47]">
+            <label className="flex items-center justify-between p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 cursor-pointer">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span className="font-semibold text-slate-200">
                   Включить «Полка Защиту» (Escrow-гарант)
                 </span>
               </div>
@@ -316,25 +316,25 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 type="checkbox"
                 checked={isSafeDeal}
                 onChange={(e) => setIsSafeDeal(e.target.checked)}
-                className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
+                className="w-4 h-4 text-emerald-500 rounded focus:ring-emerald-500"
               />
             </label>
 
-            <label className="flex items-center justify-between p-3 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 cursor-pointer">
+            <label className="flex items-center justify-between p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 cursor-pointer">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-500" />
+                <Sparkles className="w-4 h-4 text-amber-400" />
                 <div>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200">
-                    VIP Полка (Золотой статус)
+                  <span className="font-semibold text-slate-200">
+                    VIP статус (Золотая плашка)
                   </span>
-                  <span className="text-[11px] text-slate-400 block">Поднятие в топ каталога и золотая рамка</span>
+                  <span className="text-[11px] text-slate-400 block">Поднятие в топ каталога</span>
                 </div>
               </div>
               <input
                 type="checkbox"
                 checked={isVip}
                 onChange={(e) => setIsVip(e.target.checked)}
-                className="w-4 h-4 text-amber-600 rounded focus:ring-amber-500"
+                className="w-4 h-4 text-amber-500 rounded focus:ring-amber-500"
               />
             </label>
           </div>
@@ -343,7 +343,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <div className="pt-3">
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-sm shadow-md shadow-amber-500/20 transition transform active:scale-95 flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-sm shadow-lg shadow-indigo-600/30 transition transform active:scale-95 flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
               <span>Поставить на Полку бесплатно</span>
