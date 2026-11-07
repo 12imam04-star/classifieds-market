@@ -9,13 +9,14 @@ export default {
     extend: {
       colors: {
         brand: {
-          blue: '#0084ff',
-          hoverBlue: '#006ed6',
-          green: '#10b981',
-          purple: '#8b5cf6',
-          darkBg: '#0f172a',
-          darkCard: '#1e293b',
-          darkBorder: '#334155'
+          indigo: '#1e1b4b',
+          amber: '#f59e0b',
+          amberDark: '#d97706',
+          emerald: '#10b981',
+          darkBg: '#0b0f19',
+          darkCard: '#151d2e',
+          darkBorder: '#232f45',
+          cream: '#fcfbf9'
         }
       }
     },

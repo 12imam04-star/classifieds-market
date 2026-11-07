@@ -19,14 +19,14 @@ export const ChatModal: React.FC<ChatModalProps> = ({
     {
       id: 'm-0',
       sender: 'system',
-      text: 'Диалог защищен. Не переходите по сторонним ссылкам и не сообщайте коды из СМС. Оформляйте сделку только через кнопку «Безопасная сделка».',
+      text: 'Диалог защищен сервисом «Полка Защита». Не переходите по внешним ссылкам и не передавайте данные карт. Оформляйте заказ только через кнопку «Купить с защитой».',
       timestamp: '19:40',
       isDealEvent: true
     },
     {
       id: 'm-1',
       sender: 'seller',
-      text: `Здравствуйте! Спасибо за интерес к объявлению «${listing.title}». Чем могу помочь?`,
+      text: `Здравствуйте! Спасибо за интерес к лоту «${listing.title}». Чем могу помочь?`,
       timestamp: '19:41'
     }
   ]);
@@ -34,9 +34,9 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   const [inputText, setInputText] = useState('');
 
   const quickReplies = [
-    'Здравствуйте! Объявление актуально?',
+    'Здравствуйте! Лот ещё на Полке?',
     'Возможен ли небольшой торг?',
-    'Сможете отправить Безопасной сделкой сегодня?'
+    'Сможете отправить Полка Доставкой сегодня?'
   ];
 
   const handleSendMessage = (textToSend?: string) => {
@@ -59,7 +59,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       if (text.includes('торг')) {
         sellerReply = 'Цена уже минимальная с учетом отличного состояния, но при быстрой покупке сделаю символическую скидку 5%.';
       } else if (text.includes('отправить') || text.includes('доставк')) {
-        sellerReply = 'Конечно, отправляю в день заказа через Безопасную сделку! Упакую максимально надежно.';
+        sellerReply = 'Конечно, отправляю в день заказа через Полка Доставку! Упакую максимально надежно.';
       }
 
       const botMsg: Message = {
@@ -73,9 +73,9 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-sm animate-in fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/80 backdrop-blur-sm animate-in fade-in">
       <div 
-        className="relative w-full max-w-lg h-[620px] bg-white dark:bg-[#1e293b] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col"
+        className="relative w-full max-w-lg h-[620px] bg-white dark:bg-[#151d2e] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Chat Header */}
@@ -108,12 +108,12 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         </div>
 
         {/* Listing Mini Bar */}
-        <div className="px-4 py-2 bg-blue-50/60 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40 flex items-center justify-between text-xs">
+        <div className="px-4 py-2 bg-amber-50/60 dark:bg-amber-950/20 border-b border-amber-100 dark:border-amber-900/30 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 truncate">
             <img src={listing.images[0]} alt="" className="w-7 h-7 rounded-lg object-cover" />
             <span className="truncate font-semibold text-slate-800 dark:text-slate-200">{listing.title}</span>
           </div>
-          <span className="font-bold text-blue-600 dark:text-blue-400 shrink-0 ml-2">
+          <span className="font-bold text-amber-600 dark:text-amber-400 shrink-0 ml-2">
             {listing.price.toLocaleString('ru-RU')} ₽
           </span>
         </div>
@@ -139,14 +139,14 @@ export const ChatModal: React.FC<ChatModalProps> = ({
                 <div
                   className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm ${
                     isUser
-                      ? 'bg-blue-600 text-white rounded-br-xs shadow-sm'
+                      ? 'bg-amber-500 text-slate-950 font-medium rounded-br-xs shadow-sm'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-xs'
                   }`}
                 >
                   <p>{msg.text}</p>
-                  <div className={`flex items-center justify-end gap-1 text-[10px] mt-1 ${isUser ? 'text-blue-200' : 'text-slate-400'}`}>
+                  <div className={`flex items-center justify-end gap-1 text-[10px] mt-1 ${isUser ? 'text-slate-800' : 'text-slate-400'}`}>
                     <span>{msg.timestamp}</span>
-                    {isUser && <CheckCheck className="w-3 h-3 text-blue-200" />}
+                    {isUser && <CheckCheck className="w-3 h-3 text-slate-800" />}
                   </div>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             <button
               key={idx}
               onClick={() => handleSendMessage(qr)}
-              className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 shrink-0 transition"
+              className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] text-slate-600 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/50 hover:text-amber-600 shrink-0 transition"
             >
               {qr}
             </button>
@@ -180,12 +180,12 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             placeholder="Напишите сообщение продавцу..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            className="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
           <button
             type="submit"
             disabled={!inputText.trim()}
-            className="p-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl transition shadow-sm"
+            className="p-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 rounded-xl transition shadow-sm font-bold"
           >
             <Send className="w-4 h-4" />
           </button>

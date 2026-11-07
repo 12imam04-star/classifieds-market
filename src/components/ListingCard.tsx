@@ -5,9 +5,8 @@ import {
   Star, 
   MapPin, 
   Zap, 
-  CheckCircle2, 
-  Truck,
-  Sparkles
+  Sparkles,
+  Package
 } from 'lucide-react';
 import { Listing } from '../types';
 
@@ -16,6 +15,7 @@ interface ListingCardProps {
   isFavorite: boolean;
   onToggleFavorite: (id: string) => void;
   onClick: (listing: Listing) => void;
+  viewMode?: 'grid' | 'list';
 }
 
 export const ListingCard: React.FC<ListingCardProps> = ({
@@ -23,6 +23,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   isFavorite,
   onToggleFavorite,
   onClick,
+  viewMode = 'grid',
 }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -30,12 +31,76 @@ export const ListingCard: React.FC<ListingCardProps> = ({
     return `${num.toLocaleString('ru-RU')} ${currency}`;
   };
 
+  if (viewMode === 'list') {
+    return (
+      <div
+        onClick={() => onClick(listing)}
+        className="group relative bg-white dark:bg-[#151d2e] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-lg hover:border-amber-400 dark:hover:border-amber-500/50 transition-all p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 cursor-pointer"
+      >
+        <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 shrink-0">
+            <img src={listing.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                {formatPrice(listing.price, listing.currency)}
+              </span>
+              {listing.isSafeDeal && (
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">
+                  <ShieldCheck className="w-3 h-3" />
+                  Полка Защита
+                </span>
+              )}
+            </div>
+
+            <h3 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors mt-0.5">
+              {listing.title}
+            </h3>
+
+            <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-1.5">
+              <span>{listing.city} {listing.metro ? `• ${listing.metro}` : ''}</span>
+              <span>•</span>
+              <span>{listing.date}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
+            <img src={listing.seller.avatar} alt="" className="w-6 h-6 rounded-full object-cover" />
+            <span className="font-medium truncate max-w-[100px]">{listing.seller.name}</span>
+            <div className="flex items-center text-amber-500 font-bold ml-1">
+              <Star className="w-3 h-3 fill-current" />
+              <span className="text-[11px] ml-0.5">{listing.seller.rating}</span>
+            </div>
+          </div>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite(listing.id);
+            }}
+            className={`p-2 rounded-xl transition ${
+              isFavorite
+                ? 'bg-rose-50 text-rose-500 dark:bg-rose-950/40'
+                : 'text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={() => onClick(listing)}
-      className="group relative bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500/50 transition-all duration-300 flex flex-col cursor-pointer overflow-hidden transform hover:-translate-y-1"
+      className="group relative bg-white dark:bg-[#151d2e] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-400 dark:hover:border-amber-500/50 transition-all duration-300 flex flex-col cursor-pointer overflow-hidden transform hover:-translate-y-1"
     >
-      {/* Photo carousel area with hover segments (Avito style) */}
+      {/* Photo carousel area with hover segments */}
       <div 
         className="relative w-full aspect-[4/3] bg-slate-100 dark:bg-slate-900 overflow-hidden"
         onMouseLeave={() => setActiveImageIndex(0)}
@@ -79,19 +144,19 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         {/* Badges on top of image */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-20 pointer-events-none">
           {listing.isVip && (
-            <span className="px-2 py-0.5 rounded-lg bg-amber-500 text-white text-[11px] font-bold shadow-sm flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 text-[10px] font-black shadow-sm flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
-              VIP
+              VIP Полка
             </span>
           )}
           {listing.isUrgent && (
-            <span className="px-2 py-0.5 rounded-lg bg-rose-600 text-white text-[11px] font-bold shadow-sm flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg bg-rose-600 text-white text-[10px] font-bold shadow-sm flex items-center gap-1">
               <Zap className="w-3 h-3" />
               Срочно
             </span>
           )}
           {listing.deliveryType === 'instant_digital' && (
-            <span className="px-2 py-0.5 rounded-lg bg-purple-600/90 backdrop-blur-sm text-white text-[10px] font-bold shadow-sm flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg bg-purple-600/95 backdrop-blur-sm text-white text-[10px] font-bold shadow-sm flex items-center gap-1">
               <Zap className="w-3 h-3 text-amber-300" />
               Автовыдача
             </span>
@@ -118,7 +183,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       {/* Card Content */}
       <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
         <div>
-          {/* Price with Avito formatting */}
+          {/* Price */}
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
               {formatPrice(listing.price, listing.currency)}
@@ -126,19 +191,15 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           </div>
 
           {/* Title */}
-          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 mt-1 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 mt-1 leading-snug group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
             {listing.title}
           </h3>
 
-          {/* Safe Deal / Escrow badge (Playerok & Avito style) */}
+          {/* Safe Deal badge */}
           {listing.isSafeDeal && (
             <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold border border-emerald-200/50 dark:border-emerald-800/40">
-              {listing.deliveryType === 'delivery' ? (
-                <Truck className="w-3 h-3" />
-              ) : (
-                <ShieldCheck className="w-3 h-3" />
-              )}
-              <span>Безопасная сделка (Escrow)</span>
+              <ShieldCheck className="w-3 h-3 text-emerald-500" />
+              <span>Полка Защита (Escrow)</span>
             </div>
           )}
         </div>

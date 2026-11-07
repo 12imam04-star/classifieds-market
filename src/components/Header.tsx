@@ -8,12 +8,15 @@ import {
   Sun, 
   Moon, 
   ShieldCheck, 
-  BarChart3, 
+  Bell, 
   User as UserIcon,
   X,
-  Layers
+  Layers,
+  CheckCircle2,
+  Sparkles
 } from 'lucide-react';
-import { CITIES, CATEGORIES } from '../data/mockData';
+import { CITIES, CATEGORIES, INITIAL_NOTIFICATIONS } from '../data/mockData';
+import { NotificationItem } from '../types';
 
 interface HeaderProps {
   searchQuery: string;
@@ -23,7 +26,7 @@ interface HeaderProps {
   favoritesCount: number;
   onOpenFavorites: () => void;
   onOpenCreate: () => void;
-  onOpenAnalysis: () => void;
+  onOpenHowItWorks: () => void;
   onOpenProfile: () => void;
   onOpenChat: () => void;
   onSelectCategory: (catId: string) => void;
@@ -39,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   favoritesCount,
   onOpenFavorites,
   onOpenCreate,
-  onOpenAnalysis,
+  onOpenHowItWorks,
   onOpenProfile,
   onOpenChat,
   onSelectCategory,
@@ -48,27 +51,35 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const markAllRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
       {/* Top micro-bar */}
-      <div className="bg-slate-100 dark:bg-slate-900 text-xs text-slate-500 dark:text-slate-400 py-1.5 px-4 sm:px-6">
+      <div className="bg-[#f7f5f0] dark:bg-slate-900/90 text-xs text-slate-500 dark:text-slate-400 py-1.5 px-4 sm:px-6 border-b border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* City Selector */}
             <div className="relative">
               <button
                 onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
-                className="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
+                className="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition"
               >
-                <MapPin className="w-3.5 h-3.5 text-blue-500" />
+                <MapPin className="w-3.5 h-3.5 text-amber-500" />
                 <span>{selectedCity}</span>
               </button>
 
               {isCityDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-52 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-2 z-50 animate-in fade-in zoom-in-95">
+                <div className="absolute left-0 mt-2 w-52 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 animate-in fade-in zoom-in-95">
                   <div className="px-3 py-1.5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
-                    Выберите регион
+                    Выберите город
                   </div>
                   {CITIES.map((city) => (
                     <button
@@ -77,12 +88,12 @@ export const Header: React.FC<HeaderProps> = ({
                         onCityChange(city);
                         setIsCityDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-700/60 transition ${
-                        selectedCity === city ? 'text-blue-600 font-bold dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40' : 'text-slate-700 dark:text-slate-200'
+                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-amber-50/60 dark:hover:bg-slate-700/60 transition ${
+                        selectedCity === city ? 'text-amber-600 font-bold dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40' : 'text-slate-700 dark:text-slate-200'
                       }`}
                     >
                       {city}
-                      {selectedCity === city && <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />}
+                      {selectedCity === city && <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />}
                     </button>
                   ))}
                 </div>
@@ -90,26 +101,30 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             <div className="hidden md:flex items-center gap-3">
-              <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+              <button
+                onClick={onOpenHowItWorks}
+                className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold hover:underline"
+              >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Безопасная сделка (Escrow 100%)
-              </span>
+                Полка Защита: Гарантия Escrow 100%
+              </button>
               <span>•</span>
-              <span className="text-slate-500">Доставка по всей РФ</span>
+              <span className="text-slate-500">Доставка по всей России</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button
-              onClick={onOpenAnalysis}
-              className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+              onClick={onOpenHowItWorks}
+              className="text-amber-600 dark:text-amber-400 hover:underline font-bold text-xs flex items-center gap-1"
             >
-              <BarChart3 className="w-3.5 h-3.5" />
-              Анализ Avito, Playerok & GGsel
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              Как работает Полка
             </button>
+
             <button
               onClick={onToggleTheme}
-              className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+              className="p-1 rounded-lg hover:bg-slate-200/60 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
               title="Переключить тему"
             >
               {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-600" />}
@@ -121,37 +136,38 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Main Header bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-3 sm:gap-4">
-          {/* Logo with Avito & Playerok inspiration */}
+          
+          {/* Logo «ПОЛКА» */}
           <div className="flex items-center gap-3 shrink-0">
-            <a href="#" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-                {/* 4 dots symbol resembling modern Russian classifieds brand identity */}
-                <div className="grid grid-cols-2 gap-1 p-1.5">
-                  <span className="w-2 h-2 rounded-full bg-cyan-300" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-300" />
-                  <span className="w-2 h-2 rounded-full bg-amber-300" />
-                  <span className="w-2 h-2 rounded-full bg-rose-300" />
+            <a href="#" className="flex items-center gap-2.5 group">
+              {/* Custom Polka Icon: stylized shelf with golden gem */}
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-800 dark:from-amber-500 dark:to-amber-600 flex items-center justify-center shadow-md shadow-amber-500/10 group-hover:scale-105 transition-transform border border-amber-500/30">
+                <div className="flex flex-col items-center justify-center">
+                  <span className="w-2.5 h-2.5 rounded-xs bg-amber-400 transform rotate-45 mb-0.5 shadow-sm" />
+                  <span className="w-5 h-1 rounded-full bg-white dark:bg-slate-900" />
                 </div>
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center">
-                  Avito<span className="text-blue-500">X</span>
-                  <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300">PRO</span>
+                  ПОЛКА
+                  <span className="ml-1.5 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                    МАРКЕТ
+                  </span>
                 </span>
-                <span className="text-[10px] text-slate-400 dark:text-slate-400 -mt-1 font-medium">
-                  Доска объявлений & Маркетплейс
+                <span className="text-[10px] text-slate-400 dark:text-slate-400 -mt-1 font-semibold tracking-wide">
+                  всё по полочкам
                 </span>
               </div>
             </a>
 
-            {/* All Categories Dropdown Button */}
+            {/* Catalog Button */}
             <div className="relative hidden lg:block">
               <button
                 onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition shadow-sm"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-amber-500 hover:bg-slate-800 dark:hover:bg-amber-600 text-white dark:text-slate-950 font-bold text-sm transition shadow-sm"
               >
                 <Layers className="w-4 h-4" />
-                Все категории
+                Все полки
               </button>
 
               {isCategoryMenuOpen && (
@@ -164,7 +180,7 @@ export const Header: React.FC<HeaderProps> = ({
                         onSelectCategory(cat.id);
                         setIsCategoryMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-between text-slate-700 dark:text-slate-200 transition"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl hover:bg-amber-50/60 dark:hover:bg-slate-700 flex items-center justify-between text-slate-700 dark:text-slate-200 transition"
                     >
                       <span>{cat.name}</span>
                       <span className="text-xs text-slate-400 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-full">
@@ -182,10 +198,10 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Поиск по объявлениям (например: iPhone 15, Steam, Квартира...)"
+                placeholder="Искать на Полке (например: iPhone 15, Steam, Квартира...)"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-11 pr-24 py-2.5 sm:py-3 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-inner"
+                className="w-full pl-11 pr-24 py-2.5 sm:py-3 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
               />
               <Search className="w-5 h-5 text-slate-400 absolute left-3.5 pointer-events-none" />
               {searchQuery && (
@@ -198,7 +214,7 @@ export const Header: React.FC<HeaderProps> = ({
               )}
               <button 
                 onClick={() => {}}
-                className="absolute right-1.5 px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-xl transition"
+                className="absolute right-1.5 px-4 py-1.5 sm:py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs sm:text-sm font-bold rounded-xl transition"
               >
                 Найти
               </button>
@@ -221,6 +237,57 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
+            {/* Notifications Dropdown (Bell) */}
+            <div className="relative">
+              <button
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="relative p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition"
+                title="Уведомления"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-slate-950 text-[10px] font-extrabold flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {isNotificationsOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-3 z-50 animate-in fade-in">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
+                    <span className="font-bold text-xs text-slate-900 dark:text-white">Уведомления</span>
+                    {unreadCount > 0 && (
+                      <button 
+                        onClick={markAllRead}
+                        className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold hover:underline"
+                      >
+                        Прочитать все
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 mt-2 max-h-64 overflow-y-auto">
+                    {notifications.map((n) => (
+                      <div 
+                        key={n.id}
+                        className={`p-2.5 rounded-xl border transition text-xs space-y-1 ${
+                          !n.read 
+                            ? 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-200/50 dark:border-amber-800/30' 
+                            : 'bg-slate-50 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-slate-900 dark:text-white text-[11px]">{n.title}</span>
+                          <span className="text-[10px] text-slate-400">{n.time}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-tight">{n.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Messages */}
             <button
               onClick={onOpenChat}
@@ -237,18 +304,18 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition hidden sm:flex items-center gap-2"
               title="Личный кабинет"
             >
-              <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
                 <UserIcon className="w-4 h-4" />
               </div>
             </button>
 
-            {/* Place Listing Button (Avito primary CTA) */}
+            {/* Place Listing Button */}
             <button
               onClick={onOpenCreate}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-xs sm:text-sm shadow-md shadow-blue-500/25 transition transform active:scale-95"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs sm:text-sm shadow-md shadow-amber-500/20 transition transform active:scale-95"
             >
               <PlusCircle className="w-4 h-4 sm:w-5 h-5" />
-              <span className="hidden sm:inline">Разместить объявление</span>
+              <span className="hidden sm:inline">Поставить на Полку</span>
               <span className="sm:hidden">Подать</span>
             </button>
           </div>

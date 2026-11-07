@@ -2,10 +2,10 @@ export interface Seller {
   id: string;
   name: string;
   avatar: string;
-  rating: number; // e.g. 4.9
+  rating: number; // e.g. 4.95
   reviewsCount: number; // e.g. 142
   dealsCount: number; // e.g. 210
-  isVerified: boolean; // паспорт / госуслуги / верификация
+  isVerified: boolean; // паспорт / госуслуги
   responseTime: string; // 'около 5 минут'
   registeredYear: number; // e.g. 2021
   onlineStatus: 'online' | 'offline';
@@ -25,7 +25,7 @@ export interface Listing {
   description: string;
   images: string[];
   condition: 'new' | 'perfect' | 'used' | 'digital';
-  isSafeDeal: boolean; // Безопасная сделка / Escrow
+  isSafeDeal: boolean; // Полка Защита (Escrow)
   deliveryType: 'delivery' | 'pickup' | 'instant_digital';
   isVip?: boolean;
   isUrgent?: boolean;
@@ -50,6 +50,7 @@ export interface FilterState {
   onlySafeDeal: boolean;
   condition: string;
   sortBy: 'date_desc' | 'price_asc' | 'price_desc' | 'rating_desc';
+  quickFilter?: string; // 'safe_deal' | 'instant' | 'free' | 'vip' | 'top_rated'
 }
 
 export interface Message {
@@ -58,4 +59,13 @@ export interface Message {
   text: string;
   timestamp: string;
   isDealEvent?: boolean;
+}
+
+export interface NotificationItem {
+  id: string;
+  title: string;
+  description: string;
+  time: string;
+  type: 'deal' | 'message' | 'system';
+  read: boolean;
 }

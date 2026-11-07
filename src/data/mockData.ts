@@ -1,9 +1,9 @@
-import { Listing, Category } from '../types';
+import { Listing, Category, NotificationItem } from '../types';
 
 export const CATEGORIES: Category[] = [
   {
     id: 'all',
-    name: 'Все категории',
+    name: 'Все полки',
     icon: 'Layers',
     count: 148,
     subcategories: []
@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'gaming_digital',
-    name: 'Игры и софт',
+    name: 'Цифровые товары',
     icon: 'Gamepad2',
     count: 38,
     subcategories: ['Ключи и активации', 'Игровые аккаунты', 'Игровая валюта', 'Подписки и софт', 'Скины']
@@ -63,6 +63,33 @@ export const CITIES = [
   'Краснодар'
 ];
 
+export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'n-1',
+    title: 'Безопасная сделка подтверждена',
+    description: 'Оплата по заказу «iPhone 15 Pro Max» заморожена на эскроу-счете. Товар готов к отправке.',
+    time: '5 минут назад',
+    type: 'deal',
+    read: false
+  },
+  {
+    id: 'n-2',
+    title: 'Новый отзыв с оценкой 5.0 ⭐',
+    description: 'Покупатель Максим поблагодарил вас за быструю доставку лота.',
+    time: '1 час назад',
+    type: 'system',
+    read: false
+  },
+  {
+    id: 'n-3',
+    title: 'Лот выставлен на Полку',
+    description: 'Ваше объявление прошло мгновенную модерацию и опубликовано бесплатно.',
+    time: '3 часа назад',
+    type: 'system',
+    read: true
+  }
+];
+
 export const INITIAL_LISTINGS: Listing[] = [
   {
     id: 'item-1',
@@ -75,7 +102,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     metro: 'м. Тверская',
     date: 'Сегодня в 19:45',
     views: 342,
-    description: 'Оригинальный iPhone 15 Pro Max, покупался в официальном магазине. Состояние аккумулятора 98%. Полный комплект: родная коробка, оригинальный кабель Type-C, чек. Без царапин и сколов, с первого дня под защитным стеклом Remax. Возможны любые проверки. Поддерживаю Безопасную сделку с проверкой при получении.',
+    description: 'Оригинальный iPhone 15 Pro Max, покупался в официальном магазине. Состояние аккумулятора 98%. Полный комплект: родная коробка, оригинальный кабель Type-C, чек. Без царапин и сколов, с первого дня под защитным стеклом Remax. Возможны любые проверки. Поддерживаю Безопасную сделку «Полка Защита» с проверкой при получении.',
     images: [
       'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=900&q=80',
@@ -115,7 +142,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     city: 'Все города',
     date: 'Сегодня в 21:10',
     views: 520,
-    description: 'Личный аккаунт Steam с первой почтой и чеками первых покупок. CS2 Prime статус, рейтинг 18,500 Premier, звание в соревновательном Faceit LVL 8. В инвентаре: нож Bowie Knife Damascus Steel, AK-47 Slate StatTrak, перчатки. Мгновенная передача данных через защищенный шлюз. Деньги холдируются платформой до полной смены почты и пароля покупателем.',
+    description: 'Личный аккаунт Steam с первой почтой и чеками первых покупок. CS2 Prime статус, рейтинг 18,500 Premier, звание Faceit LVL 8. В инвентаре: нож Bowie Knife Damascus Steel, AK-47 Slate StatTrak, перчатки. Мгновенная передача данных через защищенный шлюз платформы ПОЛКА. Деньги холдируются до полной смены почты и пароля покупателем.',
     images: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
@@ -126,7 +153,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     isUrgent: true,
     seller: {
       id: 'seller-2',
-      name: 'DigitalShop Prime (GG)',
+      name: 'DigitalShop Prime',
       avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=200&q=80',
       rating: 4.98,
       reviewsCount: 1420,
@@ -195,7 +222,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     metro: 'м. Невский проспект',
     date: 'Вчера в 20:15',
     views: 890,
-    description: 'Новая ревизия PS5 Slim с дисководом, куплена 3 месяца назад. Бережная эксплуатация, в комплекте два оригинальных геймпада DualSense (белый и Midnight Black), зарядная станция Sony, коробка со всеми проводами. Турецкий аккаунт с оплаченной подпиской PS Plus Deluxe на 8 месяцев отдаю в подарок! Отправляю сделкой через любую службу доставки с проверкой.',
+    description: 'Новая ревизия PS5 Slim с дисководом, куплена 3 месяца назад. Бережная эксплуатация, в комплекте два оригинальных геймпада DualSense (белый и Midnight Black), зарядная станция Sony, коробка со всеми проводами. Турецкий аккаунт с оплаченной подпиской PS Plus Deluxe на 8 месяцев отдаю в подарок! Отправляю сделкой через службу «Полка Доставка» с проверкой в пункте выдачи.',
     images: [
       'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1507457379470-08b800bebc67?auto=format&fit=crop&w=900&q=80'
@@ -232,7 +259,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     city: 'Все города',
     date: 'Сегодня в 22:00',
     views: 1420,
-    description: 'Официальная подписка Telegram Premium на 1 год через подарочный сертификат (Gift Link). Вход в ваш аккаунт НЕ требуется! Никаких рисков бана или слета. Гарантия на весь срок действия подписки. Активация за 1-2 минуты после оплаты. Безопасная сделка: подтверждаете заказ только тогда, когда у вас загорелась звездочка Premium в профиле.',
+    description: 'Официальная подписка Telegram Premium на 1 год через подарочный сертификат (Gift Link). Вход в ваш аккаунт НЕ требуется! Никаких рисков бана или слета. Гарантия на весь срок действия подписки. Активация за 1-2 минуты после оплаты. Безопасная сделка «Полка Защита»: подтверждаете заказ только тогда, когда у вас загорелась звездочка Premium в профиле.',
     images: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
@@ -270,7 +297,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     city: 'Казань',
     date: 'Вчера в 14:10',
     views: 1100,
-    description: 'Автомобиль в идеальном заводском состоянии, один владелец. Заводской M-пакет, лазерная оптика BMW Laser, цифровая приборная панель Live Cockpit Professional, проекция на лобовое стекло, камеры 360°, музыка Harman Kardon. Передняя часть и все зоны риска в бронепленке SunTek с момента покупки. Обслуживание исключительно у официального дилера ТТС. Зеленая Автотека без ДТП и расчетов.',
+    description: 'Автомобиль в идеальном заводском состоянии, один владелец. Заводской M-пакет, лазерная оптика BMW Laser, цифровая приборная панель Live Cockpit Professional, проекция на лобовое стекло, камеры 360°, музыка Harman Kardon. Передняя часть и все зоны риска в бронепленке SunTek с момента покупки. Обслуживание исключительно у официального дилера. Чистая юридическая история без ДТП и расчетов.',
     images: [
       'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'
@@ -310,7 +337,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     city: 'Все города',
     date: 'Сегодня в 12:40',
     views: 450,
-    description: 'Профессиональная разработка веб-сервисов, интернет-магазинов, P2P бирж и Telegram WebApps. Стек технологий: React, Next.js, Node.js, Python FastAPI, Tailwind, PostgreSQL. Индивидуальный дизайн в Figma, адаптивность под любые устройства, интеграция платежных систем (СБП, Тинькофф, ЮKassa, криптошлюзы). Оплата через безопасную сделку по этапам с фиксацией ТЗ.',
+    description: 'Профессиональная разработка веб-сервисов, интернет-магазинов, P2P бирж и Telegram WebApps. Стек технологий: React, Next.js, Node.js, Python FastAPI, Tailwind, PostgreSQL. Индивидуальный дизайн в Figma, адаптивность под любые устройства, интеграция платежных систем (СБП, Тинькофф, ЮKassa, криптошлюзы). Оплата через безопасную сделку «Полка Защита» по этапам с фиксацией ТЗ.',
     images: [
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80'
@@ -339,7 +366,7 @@ export const INITIAL_LISTINGS: Listing[] = [
   },
   {
     id: 'item-8',
-    title: 'Кожаная куртка оверсайз Zara Studio Edition (Размер M-L, Новая)',
+    title: 'Кожаная куртка оверсайз Studio Edition (Размер M-L, Новая с бирками)',
     price: 7200,
     currency: '₽',
     category: 'fashion',
@@ -347,7 +374,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     city: 'Екатеринбург',
     date: 'Вчера в 18:30',
     views: 195,
-    description: 'Стильная оверсайз куртка из плотной экокожи премиального качества из лимитированной коллекции Studio Edition. Абсолютно новая с навесными бирками. Качественная фурнитура, стильный свободный крой. Не подошел размер при заказе из-за рубежа. Отправлю Авито Доставкой / СДЭК с возможностью примерки в ПВЗ.',
+    description: 'Стильная оверсайз куртка из плотной экокожи премиального качества из лимитированной коллекции Studio Edition. Абсолютно новая с навесными бирками. Качественная фурнитура, стильный свободный крой. Не подошел размер при заказе. Отправлю через службу «Полка Доставка» с возможностью примерки в ПВЗ.',
     images: [
       'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=900&q=80'
@@ -368,7 +395,7 @@ export const INITIAL_LISTINGS: Listing[] = [
       onlineStatus: 'online'
     },
     specs: {
-      'Бренд': 'Zara Studio',
+      'Бренд': 'Studio Edition',
       'Размер': 'M/L (46-48)',
       'Цвет': 'Черный матовый',
       'Состояние': 'Новое с бирками'

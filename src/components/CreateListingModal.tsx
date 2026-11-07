@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, ShieldCheck, Sparkles, Upload, Image as ImageIcon } from 'lucide-react';
+import { X, Plus, ShieldCheck, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { CATEGORIES, CITIES } from '../data/mockData';
 import { Listing } from '../types';
 
@@ -59,7 +59,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
     if (!title.trim()) return;
 
     const newListing: Listing = {
-      id: `user-item-${Date.now()}`,
+      id: `lot-${Date.now()}`,
       title: title.trim(),
       price: price === '' ? 0 : Number(price),
       currency: '₽',
@@ -68,7 +68,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
       metro: metro.trim() ? `м. ${metro.trim()}` : undefined,
       date: 'Только что',
       views: 1,
-      description: description.trim() || 'Описание не указано автором.',
+      description: description.trim() || 'Описание лота не указано продавцом.',
       images: images.length > 0 ? images : [PRESET_SAMPLE_PHOTOS[0]],
       condition,
       isSafeDeal,
@@ -76,7 +76,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
       isVip,
       seller: {
         id: 'current-user',
-        name: 'Вы (Продавец)',
+        name: 'Вы (Продавец на Полке)',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
         rating: 5.0,
         reviewsCount: 1,
@@ -87,9 +87,9 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
         onlineStatus: 'online',
       },
       specs: {
-        'Категория': CATEGORIES.find(c => c.id === category)?.name || 'Разное',
+        'Полка': CATEGORIES.find(c => c.id === category)?.name || 'Разное',
         'Состояние': condition === 'new' ? 'Новое' : condition === 'perfect' ? 'Идеальное' : condition === 'used' ? 'Б/У' : 'Цифровой товар',
-        'Размещение': isVip ? 'VIP Объявление' : 'Бесплатное размещение'
+        'Размещение': isVip ? 'VIP Полка' : 'Бесплатное размещение'
       }
     };
 
@@ -98,19 +98,19 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-sm overflow-y-auto animate-in fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/80 backdrop-blur-sm overflow-y-auto animate-in fade-in">
       <div 
-        className="relative w-full max-w-2xl bg-white dark:bg-[#1e293b] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[92vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-white dark:bg-[#151d2e] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-900/50">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-              Новое объявление
+            <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
+              Поставить лот на Полку
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Бесплатная публикация на доске объявлений
+              Бесплатная публикация объявления за пару кликов
             </p>
           </div>
           <button
@@ -126,15 +126,15 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           {/* Title */}
           <div className="space-y-1.5">
             <label className="font-semibold text-slate-700 dark:text-slate-200">
-              Название объявления <span className="text-rose-500">*</span>
+              Название объявления / лота <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               required
-              placeholder="Например: Игровая видеокарта RTX 4070 Ti или Квартира 2-к"
+              placeholder="Например: Ноутбук MacBook Air M2 или Квартира у парка"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
 
@@ -142,12 +142,12 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="font-semibold text-slate-700 dark:text-slate-200">
-                Категория
+                Категория (Полка)
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
               >
                 {CATEGORIES.filter(c => c.id !== 'all').map((c) => (
                   <option key={c.id} value={c.id}>
@@ -164,7 +164,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
               >
                 {CITIES.filter(c => c !== 'Все города').map((c) => (
                   <option key={c} value={c}>
@@ -186,7 +186,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 placeholder="Например: Арбатская или Центр"
                 value={metro}
                 onChange={(e) => setMetro(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
 
@@ -200,7 +200,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 placeholder="0 ₽"
                 value={price}
                 onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
           </div>
@@ -223,7 +223,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                   onClick={() => setCondition(c.id as any)}
                   className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition ${
                     condition === c.id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 font-bold'
                       : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50'
                   }`}
                 >
@@ -236,7 +236,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           {/* Photos */}
           <div className="space-y-2">
             <label className="font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-between">
-              <span>Фотографии объявления</span>
+              <span>Фотографии лота</span>
               <span className="text-xs text-slate-400 font-normal">Добавлено: {images.length}</span>
             </label>
 
@@ -263,7 +263,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 placeholder="Вставьте ссылку на изображение (URL)..."
                 value={customImageUrl}
                 onChange={(e) => setCustomImageUrl(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
               <button
                 type="button"
@@ -281,7 +281,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                   type="button"
                   key={idx}
                   onClick={() => handleAddSampleImage(preset)}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 text-[11px] text-blue-600 dark:text-blue-400"
+                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 text-[11px] text-amber-600 dark:text-amber-400"
                 >
                   Фото {idx + 1}
                 </button>
@@ -292,14 +292,14 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           {/* Description */}
           <div className="space-y-1.5">
             <label className="font-semibold text-slate-700 dark:text-slate-200">
-              Описание
+              Описание лота
             </label>
             <textarea
               rows={3}
               placeholder="Расскажите подробнее о товаре, комплектации, причинах продажи и нюансах..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
 
@@ -309,7 +309,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
                 <span className="font-semibold text-slate-800 dark:text-slate-200">
-                  Включить Безопасную сделку (Escrow)
+                  Включить «Полка Защиту» (Escrow-гарант)
                 </span>
               </div>
               <input
@@ -325,9 +325,9 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 <Sparkles className="w-4 h-4 text-amber-500" />
                 <div>
                   <span className="font-semibold text-slate-800 dark:text-slate-200">
-                    VIP статус объявления
+                    VIP Полка (Золотой статус)
                   </span>
-                  <span className="text-[11px] text-slate-400 block">Поднятие в топ и золотая плашка</span>
+                  <span className="text-[11px] text-slate-400 block">Поднятие в топ каталога и золотая рамка</span>
                 </div>
               </div>
               <input
@@ -343,10 +343,10 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <div className="pt-3">
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-sm shadow-md shadow-blue-500/25 transition transform active:scale-95 flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-sm shadow-md shadow-amber-500/20 transition transform active:scale-95 flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
-              <span>Опубликовать объявление бесплатно</span>
+              <span>Поставить на Полку бесплатно</span>
             </button>
           </div>
         </form>
