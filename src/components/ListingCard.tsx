@@ -311,6 +311,33 @@ export const ListingCard: React.FC<ListingCardProps> = ({
               )}
             </div>
           </div>
+
+          {/* Quick Action Button on Card */}
+          <div className="pt-2">
+            {isDigital ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClick(listing);
+                }}
+                className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/30 transition active:scale-95"
+              >
+                <Zap className="w-3.5 h-3.5 text-cyan-200" />
+                <span>Купить с автовыдачей (0 сек)</span>
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClick(listing);
+                }}
+                className="w-full py-1.5 rounded-lg bg-[#141f35] hover:bg-blue-600 text-slate-200 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 border border-[#22334e] hover:border-blue-500 transition active:scale-95"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400 group-hover:text-white" />
+                <span>Купить с Полка Защитой</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -122,7 +122,7 @@ export const App: React.FC = () => {
     condition: 'all',
     sortBy: 'date_desc',
     quickFilter: undefined,
-    storefrontMode: 'classic', // 'classic' | 'digital' | 'all'
+    storefrontMode: 'classic', // 'classic' | 'digital'
     digitalPlatform: undefined,
     digitalRegion: undefined
   });
@@ -387,84 +387,79 @@ export const App: React.FC = () => {
         onModeChange={handleModeChange}
       />
 
-      {/* Hero Welcome Banner (Adapts dynamically to Digital vs Classic) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 w-full">
+      {/* Compact High-Converting Hero Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-3 w-full">
         {filters.storefrontMode === 'digital' ? (
-          /* DIGITAL HERO BANNER */
-          <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-r from-purple-700 via-indigo-800 to-cyan-700 text-white shadow-2xl shadow-purple-600/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 border border-purple-400/30 relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute left-1/3 -top-10 w-56 h-56 bg-purple-400/30 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="space-y-2 z-10">
+          /* DIGITAL COMPACT HERO BANNER */
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#170e2b] via-[#21123d] to-[#0c1829] border border-purple-500/30 text-white shadow-xl shadow-purple-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+            <div className="space-y-1 z-10">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-purple-950/60 backdrop-blur-md text-cyan-300 text-[11px] font-black border border-purple-400/40 flex items-center gap-1">
-                  <Zap className="w-3 h-3 text-cyan-300" />
-                  ПОЛКА Digital • Игры, аккаунты & интернет-подписки
+                <span className="px-2.5 py-0.5 rounded-full bg-purple-950/80 text-cyan-300 text-[10px] font-black border border-purple-400/40 flex items-center gap-1">
+                  <Zap className="w-3 h-3 text-cyan-300 animate-pulse" />
+                  ПОЛКА Digital • Автовыдача 0 сек
                 </span>
-                <span className="text-emerald-300 text-xs font-bold flex items-center gap-1">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  100% Escrow Гарант (Холд до проверки)
+                <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  100% Escrow Гарант • Комиссия всего 3%
                 </span>
               </div>
-              <h2 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
-                Каталог интернет-подписок, игровых аккаунтов и ключей
+              <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
+                Маркетплейс цифровых услуг, игр, подписок и аккаунтов
               </h2>
-              <p className="text-xs sm:text-sm text-slate-100/90 max-w-2xl leading-relaxed">
-                Telegram Premium, ChatGPT, Spotify, Steam CS2, Робуксы и софт без наценок и без 20% комиссий. Мгновенная выдача за 0 секунд в защищенный чат сделки.
+              <p className="text-xs text-slate-300 max-w-2xl leading-normal">
+                Telegram Premium, ChatGPT Plus, Steam CS2, Робуксы и ключи с моментальной выдачей в защищенный чат.
               </p>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0 z-10">
+            <div className="flex items-center gap-2.5 shrink-0 z-10">
               <button
                 onClick={() => setIsHowItWorksOpen(true)}
-                className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-bold transition border border-white/25 backdrop-blur-md"
+                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
               >
                 🛡️ Как работает гарант
               </button>
               <button
                 onClick={() => setIsCreateOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 text-xs sm:text-sm font-black transition shadow-xl active:scale-95"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 text-xs font-black transition shadow-lg active:scale-95"
               >
-                + Продать цифровой товар
+                + Продать в Digital
               </button>
             </div>
           </div>
         ) : (
-          /* CLASSIC GOODS HERO BANNER */
-          <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white shadow-2xl shadow-indigo-600/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 border border-white/10 relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute left-1/3 -top-10 w-56 h-56 bg-purple-400/20 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="space-y-2 z-10">
+          /* CLASSIC GOODS COMPACT HERO BANNER */
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0d172e] via-[#131f3d] to-[#1a1233] border border-blue-500/30 text-white shadow-xl shadow-blue-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+            <div className="space-y-1 z-10">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-black border border-white/20">
+                <span className="px-2.5 py-0.5 rounded-full bg-blue-950/80 text-blue-300 text-[10px] font-black border border-blue-400/40 flex items-center gap-1">
+                  <ShoppingBag className="w-3 h-3 text-blue-400" />
                   Городская витрина объявлений
                 </span>
-                <span className="text-cyan-200 text-xs font-bold flex items-center gap-1">
-                  <ShieldCheck className="w-4 h-4 text-cyan-300" />
-                  100% Escrow Гарант
+                <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  100% Escrow Гарант • Осмотр в ПВЗ перед выплатой
                 </span>
               </div>
-              <h2 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
-                Витрина бесплатных объявлений с 100% безопасной сделкой (Escrow)
+              <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
+                Безопасная витрина товаров, авто и услуг вашего города
               </h2>
-              <p className="text-xs sm:text-sm text-slate-100/90 max-w-2xl leading-relaxed">
-                Публикуйте лоты на Полку бесплатно в пару кликов. Покупайте вещи, технику и авто с гарантией возврата средств и доставкой по всей России с примеркой в ПВЗ.
+              <p className="text-xs text-slate-300 max-w-2xl leading-normal">
+                Покупайте технику и авто с примеркой в ПВЗ. Деньги замораживаются банком и переводятся продавцу только после вашего подтверждения.
               </p>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0 z-10">
+            <div className="flex items-center gap-2.5 shrink-0 z-10">
               <button
                 onClick={() => setIsHowItWorksOpen(true)}
-                className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-bold transition border border-white/25 backdrop-blur-md"
+                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
               >
-                🛡️ Как работает Полка Защита
+                🛡️ Полка Защита
               </button>
               <button
                 onClick={() => setIsCreateOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-950 text-xs sm:text-sm font-black transition shadow-xl active:scale-95"
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black transition shadow-lg active:scale-95"
               >
-                + Разместить бесплатно
+                + Разместить лот
               </button>
             </div>
           </div>

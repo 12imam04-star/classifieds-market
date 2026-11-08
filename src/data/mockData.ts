@@ -162,8 +162,8 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 1850,
     description: 'Официальная подписка Telegram Premium на 1 год через подарочный сертификат (Gift Link). Вход в ваш аккаунт НЕ требуется! Никаких рисков бана или слета. Гарантия на весь срок действия подписки. Активация за 1-2 минуты после оплаты. Безопасная сделка «Полка Защита»: подтверждаете заказ только тогда, когда у вас загорелась звездочка Premium в профиле.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
     isSafeDeal: true,
@@ -204,8 +204,8 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 1240,
     description: 'Индивидуальный аккаунт ChatGPT Plus с оплаченной подпиской на 30 дней. Полный доступ к моделям GPT-4o, генератору изображений DALL-E 3, плагинам и анализу данных. Вы получаете логин и пароль от аккаунта и родной почты (первые руки, без соседей). Работает стабильно из любой точки мира. Гарантия замены на весь срок.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
     isSafeDeal: true,
@@ -246,8 +246,8 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 920,
     description: 'Личный аккаунт Steam с первой почтой и чеками первых покупок. CS2 Prime статус, рейтинг 18,500 Premier, звание Faceit LVL 8. В инвентаре: нож Bowie Knife Damascus Steel, AK-47 Slate StatTrak, перчатки. Мгновенная передача данных через защищенный шлюз платформы ПОЛКА. Деньги холдируются до полной смены почты и пароля покупателем.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
     isSafeDeal: true,
@@ -288,7 +288,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 2100,
     description: 'Покупка 2 000 Robux чистым трансфером через покупку вашего геймпасса. Налог Roblox 30% полностью покрывается за мой счет (вы получаете ровно 2 000 R$ чистыми на баланс!). Белый метод, никаких списаний или банов. Быстрая инструкция в чате.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1612287232230-65e9b8676d49?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
@@ -329,8 +329,8 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 1650,
     description: 'Прокачанный личный аккаунт Brawl Stars с полной перепривязкой Supercell ID на вашу почту. 42k кубков, 72 бойца, множество редких архивных скинов (Звездная Шелли, Феникс Ворон, Меха Ворон). Перепривязка в прямом эфире в чате «Полка Защита».',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
     isSafeDeal: true,
@@ -370,8 +370,8 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 890,
     description: 'Индивидуальная премиум-подписка Spotify на 1 год. Никаких семейных групп и риска слета. Высочайшее качество звука (Very High 320 kbps), скачивание треков офлайн, отсутствие рекламы. Активируем на ваш существующий аккаунт с сохранением всех плейлистов или выдаем готовый.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',
     isSafeDeal: true,
@@ -411,7 +411,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     views: 2400,
     description: 'Оригинальный 25-значный лицензионный ключ активации Windows 11 Pro / Windows 10 Pro. Тип лицензии: Retail (привязывается к учетной записи Microsoft и материнской плате, не слетает при переустановке ОС). Официальная онлайн-активация с серверов Microsoft. Автовыдача ключа сразу после оплаты в чат заказа.',
     images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80'
     ],
     condition: 'digital',

@@ -11,7 +11,7 @@ export interface Seller {
   onlineStatus: 'online' | 'offline';
 }
 
-export type StorefrontMode = 'classic' | 'digital' | 'all';
+export type StorefrontMode = 'classic' | 'digital';
 
 export interface Listing {
   id: string;
