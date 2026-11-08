@@ -53,7 +53,8 @@ import {
   ShoppingBag,
   Gamepad2,
   Key,
-  Coins
+  Coins,
+  ArrowUp
 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -144,7 +145,16 @@ export const App: React.FC = () => {
   const [isSafeDealOpen, setIsSafeDealOpen] = useState(false);
   const [safeDealListing, setSafeDealListing] = useState<Listing | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -351,7 +361,16 @@ export const App: React.FC = () => {
   const currentCategories = filters.storefrontMode === 'digital' ? DIGITAL_CATEGORIES : CLASSIC_CATEGORIES;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#070a13] text-slate-100 transition-colors pb-16 md:pb-0">
+    <div className="min-h-screen flex flex-col bg-[#070a13] text-slate-100 transition-colors pb-16 md:pb-0 relative overflow-x-hidden">
+      {/* Ambient Atmospheric Luxury Glow Orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className={`absolute -top-32 left-1/4 w-[550px] h-[350px] rounded-full blur-[140px] opacity-20 transition-all duration-700 ${
+          filters.storefrontMode === 'digital' ? 'bg-purple-600' : 'bg-blue-600'
+        }`} />
+        <div className={`absolute top-24 right-5 w-[450px] h-[300px] rounded-full blur-[160px] opacity-20 transition-all duration-700 ${
+          filters.storefrontMode === 'digital' ? 'bg-cyan-500' : 'bg-indigo-600'
+        }`} />
+      </div>
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-20 md:bottom-8 right-6 z-50 px-4 py-3 rounded-2xl bg-[#101726] text-white border border-[#1f2d47] shadow-2xl shadow-blue-500/20 flex items-center gap-2.5 text-xs sm:text-sm font-bold animate-in slide-in-from-bottom-5">
@@ -390,7 +409,8 @@ export const App: React.FC = () => {
         }}
         storefrontMode={filters.storefrontMode}
         onModeChange={handleModeChange}
-        onOpenMobileFilters={() => setIsMobileFilterOpen(true)}
+        selectedPlatform={filters.digitalPlatform}
+        onSelectPlatform={(plat) => setFilters(prev => ({ ...prev, digitalPlatform: plat }))}
       />
 
       {/* Hero Banner: Full for Desktop, Slim Ticker for Mobile */}
@@ -873,6 +893,17 @@ export const App: React.FC = () => {
         onReset={handleResetFilters}
         totalFound={filteredListings.length}
       />
+
+      {/* Floating Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-20 md:bottom-8 right-5 z-40 p-3 rounded-full bg-[#0e1628]/90 border border-blue-500/40 text-blue-400 hover:text-white hover:bg-blue-600 shadow-2xl shadow-blue-500/20 backdrop-blur-md transition-all duration-200 transform active:scale-90"
+          title="Наверх"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 };
