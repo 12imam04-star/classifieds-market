@@ -29,6 +29,9 @@ import {
 import { 
   UserProfileModal 
 } from './components/UserProfileModal';
+import {
+  MobileFilterDrawer
+} from './components/MobileFilterDrawer';
 
 import { INITIAL_LISTINGS, CLASSIC_CATEGORIES, DIGITAL_CATEGORIES } from './data/mockData';
 import { Listing, FilterState, StorefrontMode } from './types';
@@ -140,6 +143,7 @@ export const App: React.FC = () => {
   const [chatListing, setChatListing] = useState<Listing | null>(null);
   const [isSafeDealOpen, setIsSafeDealOpen] = useState(false);
   const [safeDealListing, setSafeDealListing] = useState<Listing | null>(null);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -373,6 +377,7 @@ export const App: React.FC = () => {
         onToggleTheme={() => setIsDark(!isDark)}
         storefrontMode={filters.storefrontMode}
         onModeChange={handleModeChange}
+        onOpenMobileFilters={() => setIsMobileFilterOpen(true)}
       />
 
       {/* Categories Bar with Storefront Mode Switcher */}
@@ -385,85 +390,120 @@ export const App: React.FC = () => {
         }}
         storefrontMode={filters.storefrontMode}
         onModeChange={handleModeChange}
+        onOpenMobileFilters={() => setIsMobileFilterOpen(true)}
       />
 
-      {/* Compact High-Converting Hero Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-3 w-full">
-        {filters.storefrontMode === 'digital' ? (
-          /* DIGITAL COMPACT HERO BANNER */
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#170e2b] via-[#21123d] to-[#0c1829] border border-purple-500/30 text-white shadow-xl shadow-purple-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
-            <div className="space-y-1 z-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-purple-950/80 text-cyan-300 text-[10px] font-black border border-purple-400/40 flex items-center gap-1">
-                  <Zap className="w-3 h-3 text-cyan-300 animate-pulse" />
-                  ПОЛКА Digital • Автовыдача 0 сек
-                </span>
-                <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  100% Escrow Гарант • Комиссия всего 3%
-                </span>
-              </div>
-              <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
-                Маркетплейс цифровых услуг, игр, подписок и аккаунтов
-              </h2>
-              <p className="text-xs text-slate-300 max-w-2xl leading-normal">
-                Telegram Premium, ChatGPT Plus, Steam CS2, Робуксы и ключи с моментальной выдачей в защищенный чат.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2.5 shrink-0 z-10">
+      {/* Hero Banner: Full for Desktop, Slim Ticker for Mobile */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-2.5 sm:pt-3 w-full">
+        {/* Mobile Slim Ticker (sm:hidden) */}
+        <div className="sm:hidden">
+          {filters.storefrontMode === 'digital' ? (
+            <div className="p-2.5 rounded-xl bg-gradient-to-r from-purple-950/90 via-indigo-950/90 to-[#0e1628] border border-purple-500/30 flex items-center justify-between text-xs shadow-md">
+              <span className="flex items-center gap-1.5 text-cyan-300 font-bold text-[11px]">
+                <Zap className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <span>Автовыдача 0 сек • Гарант 100%</span>
+              </span>
               <button
                 onClick={() => setIsHowItWorksOpen(true)}
-                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
+                className="text-[10px] text-purple-300 underline font-medium"
               >
-                🛡️ Как работает гарант
-              </button>
-              <button
-                onClick={() => setIsCreateOpen(true)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 text-xs font-black transition shadow-lg active:scale-95"
-              >
-                + Продать в Digital
+                Гарантии
               </button>
             </div>
-          </div>
-        ) : (
-          /* CLASSIC GOODS COMPACT HERO BANNER */
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0d172e] via-[#131f3d] to-[#1a1233] border border-blue-500/30 text-white shadow-xl shadow-blue-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
-            <div className="space-y-1 z-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-blue-950/80 text-blue-300 text-[10px] font-black border border-blue-400/40 flex items-center gap-1">
-                  <ShoppingBag className="w-3 h-3 text-blue-400" />
-                  Городская витрина объявлений
-                </span>
-                <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  100% Escrow Гарант • Осмотр в ПВЗ перед выплатой
-                </span>
-              </div>
-              <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
-                Безопасная витрина товаров, авто и услуг вашего города
-              </h2>
-              <p className="text-xs text-slate-300 max-w-2xl leading-normal">
-                Покупайте технику и авто с примеркой в ПВЗ. Деньги замораживаются банком и переводятся продавцу только после вашего подтверждения.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2.5 shrink-0 z-10">
+          ) : (
+            <div className="p-2.5 rounded-xl bg-gradient-to-r from-blue-950/90 via-indigo-950/90 to-[#0e1628] border border-blue-500/30 flex items-center justify-between text-xs shadow-md">
+              <span className="flex items-center gap-1.5 text-blue-300 font-bold text-[11px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Escrow защита • Осмотр в ПВЗ</span>
+              </span>
               <button
                 onClick={() => setIsHowItWorksOpen(true)}
-                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
+                className="text-[10px] text-blue-300 underline font-medium"
               >
-                🛡️ Полка Защита
-              </button>
-              <button
-                onClick={() => setIsCreateOpen(true)}
-                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black transition shadow-lg active:scale-95"
-              >
-                + Разместить лот
+                Как работает
               </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Desktop Full Hero Banner (hidden sm:block) */}
+        <div className="hidden sm:block">
+          {filters.storefrontMode === 'digital' ? (
+            /* DIGITAL COMPACT HERO BANNER */
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#170e2b] via-[#21123d] to-[#0c1829] border border-purple-500/30 text-white shadow-xl shadow-purple-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+              <div className="space-y-1 z-10">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-950/80 text-cyan-300 text-[10px] font-black border border-purple-400/40 flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-cyan-300 animate-pulse" />
+                    ПОЛКА Digital • Автовыдача 0 сек
+                  </span>
+                  <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    100% Escrow Гарант • Комиссия всего 3%
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
+                  Маркетплейс цифровых услуг, игр, подписок и аккаунтов
+                </h2>
+                <p className="text-xs text-slate-300 max-w-2xl leading-normal">
+                  Telegram Premium, ChatGPT Plus, Steam CS2, Робуксы и ключи с моментальной выдачей в защищенный чат.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 shrink-0 z-10">
+                <button
+                  onClick={() => setIsHowItWorksOpen(true)}
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
+                >
+                  🛡️ Как работает гарант
+                </button>
+                <button
+                  onClick={() => setIsCreateOpen(true)}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 text-xs font-black transition shadow-lg active:scale-95"
+                >
+                  + Продать в Digital
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* CLASSIC GOODS COMPACT HERO BANNER */
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0d172e] via-[#131f3d] to-[#1a1233] border border-blue-500/30 text-white shadow-xl shadow-blue-900/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+              <div className="space-y-1 z-10">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-blue-950/80 text-blue-300 text-[10px] font-black border border-blue-400/40 flex items-center gap-1">
+                    <ShoppingBag className="w-3 h-3 text-blue-400" />
+                    Городская витрина объявлений
+                  </span>
+                  <span className="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    100% Escrow Гарант • Осмотр в ПВЗ перед выплатой
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-xl font-black tracking-tight text-white">
+                  Безопасная витрина товаров, авто и услуг вашего города
+                </h2>
+                <p className="text-xs text-slate-300 max-w-2xl leading-normal">
+                  Покупайте технику и авто с примеркой в ПВЗ. Деньги замораживаются банком и переводятся продавцу только после вашего подтверждения.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 shrink-0 z-10">
+                <button
+                  onClick={() => setIsHowItWorksOpen(true)}
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition border border-white/20 backdrop-blur-md"
+                >
+                  🛡️ Полка Защита
+                </button>
+                <button
+                  onClick={() => setIsCreateOpen(true)}
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black transition shadow-lg active:scale-95"
+                >
+                  + Разместить лот
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Main Container */}
@@ -674,7 +714,7 @@ export const App: React.FC = () => {
             ) : (
               <div className={
                 viewMode === 'grid'
-                  ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5'
+                  ? 'grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-5'
                   : 'space-y-3'
               }>
                 {filteredListings.map((listing) => (
@@ -823,6 +863,15 @@ export const App: React.FC = () => {
         myListings={myListings}
         favoritesCount={favorites.length}
         onOpenListing={(listing) => setSelectedListing(listing)}
+      />
+
+      <MobileFilterDrawer
+        isOpen={isMobileFilterOpen}
+        onClose={() => setIsMobileFilterOpen(false)}
+        filters={filters}
+        onChange={(newFilters) => setFilters(prev => ({ ...prev, ...newFilters }))}
+        onReset={handleResetFilters}
+        totalFound={filteredListings.length}
       />
     </div>
   );

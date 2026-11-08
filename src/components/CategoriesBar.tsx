@@ -82,8 +82,8 @@ export const CategoriesBar: React.FC<CategoriesBarProps> = ({
             </div>
           </div>
 
-          {/* Right Trust Mini-Badge */}
-          <div className="hidden xl:flex items-center shrink-0 text-xs pl-3 border-l border-[#1f2d47]">
+          {/* Right Trust Mini-Badge (visible on wide 2xl screens to avoid clipping categories on laptops) */}
+          <div className="hidden 2xl:flex items-center shrink-0 text-xs pl-3 border-l border-[#1f2d47]">
             {storefrontMode === 'digital' ? (
               <span className="text-cyan-300 font-medium flex items-center gap-1.5 bg-cyan-950/40 px-2.5 py-1 rounded-lg border border-cyan-500/20">
                 <Zap className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />

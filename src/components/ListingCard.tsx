@@ -240,35 +240,35 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       </div>
 
       {/* Card Body */}
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
+      <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
         <div>
           {/* Price & Monthly Split */}
-          <div className="flex items-baseline justify-between gap-2">
-            <span className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <div className="flex items-baseline justify-between gap-1">
+            <span className="text-base sm:text-xl font-black text-white tracking-tight">
               {formatPrice(listing.price, listing.currency)}
             </span>
             {monthlySplit && (
-              <span className="text-[11px] text-slate-400 font-medium">
+              <span className="text-[10px] sm:text-[11px] text-slate-400 font-medium hidden sm:inline">
                 от {monthlySplit} ₽/мес
               </span>
             )}
           </div>
 
           {/* Title */}
-          <h3 className="text-sm font-semibold text-slate-100 line-clamp-2 mt-1 leading-snug group-hover:text-blue-400 transition-colors">
+          <h3 className="text-xs sm:text-sm font-semibold text-slate-100 line-clamp-2 mt-0.5 leading-snug group-hover:text-blue-400 transition-colors">
             {listing.title}
           </h3>
 
           {/* Digital attributes pills (Platform / Region) */}
           {isDigital && (listing.platform || listing.region) && (
-            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+            <div className="flex flex-wrap items-center gap-1 mt-1.5">
               {listing.platform && (
-                <span className="px-1.5 py-0.5 rounded bg-blue-950/60 border border-blue-500/30 text-cyan-300 text-[10px] font-bold">
+                <span className="px-1.5 py-0.2 rounded bg-blue-950/60 border border-blue-500/30 text-cyan-300 text-[9px] sm:text-[10px] font-bold">
                   {listing.platform}
                 </span>
               )}
               {listing.region && (
-                <span className="px-1.5 py-0.5 rounded bg-purple-950/60 border border-purple-500/30 text-purple-300 text-[10px]">
+                <span className="px-1.5 py-0.2 rounded bg-purple-950/60 border border-purple-500/30 text-purple-300 text-[9px] sm:text-[10px] truncate max-w-[120px]">
                   {listing.region}
                 </span>
               )}
@@ -277,53 +277,50 @@ export const ListingCard: React.FC<ListingCardProps> = ({
 
           {/* Safe Deal badge (Emerald Escrow) */}
           {listing.isSafeDeal && (
-            <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Безопасная сделка (Escrow)</span>
+            <div className="mt-1.5 inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] font-semibold">
+              <ShieldCheck className="w-3 h-3 text-emerald-400" />
+              <span>Полка Защита</span>
             </div>
           )}
         </div>
 
         {/* Location & Seller Footer */}
-        <div className="pt-2.5 border-t border-[#1f2d47] text-xs text-slate-400 space-y-1">
+        <div className="pt-2 border-t border-[#1f2d47] text-[10px] sm:text-xs text-slate-400 space-y-1">
           <div className="flex items-center gap-1 truncate">
             {isDigital ? (
               <div className="flex items-center gap-1 text-cyan-400">
                 <Zap className="w-3 h-3 text-cyan-400 shrink-0" />
-                <span className="truncate text-[11px]">Цифровая передача онлайн</span>
+                <span className="truncate text-[10px] sm:text-[11px]">Автовыдача 0 сек</span>
               </div>
             ) : (
               <>
-                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
                 <span className="truncate">{listing.city} {listing.metro ? `• ${listing.metro}` : ''}</span>
               </>
             )}
           </div>
 
-          <div className="flex items-center justify-between text-[11px] pt-0.5">
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] pt-0.5">
             <span className="text-slate-400">{listing.date}</span>
             <div className="flex items-center gap-1 text-amber-400 font-bold">
-              <Star className="w-3 h-3 fill-amber-400" />
+              <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-amber-400" />
               <span>{listing.seller.rating}</span>
               <span className="text-slate-400 font-normal">({listing.seller.reviewsCount})</span>
-              {listing.seller.isVerified && (
-                <CheckCircle2 className="w-3 h-3 text-blue-400 ml-0.5" />
-              )}
             </div>
           </div>
 
           {/* Quick Action Button on Card */}
-          <div className="pt-2">
+          <div className="pt-1.5">
             {isDigital ? (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onClick(listing);
                 }}
-                className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/30 transition active:scale-95"
+                className="w-full py-1 sm:py-1.5 rounded-lg bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow-md shadow-purple-900/30 transition active:scale-95"
               >
-                <Zap className="w-3.5 h-3.5 text-cyan-200" />
-                <span>Купить с автовыдачей (0 сек)</span>
+                <Zap className="w-3 h-3 text-cyan-200" />
+                <span>Купить (0 сек)</span>
               </button>
             ) : (
               <button
@@ -331,10 +328,10 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                   e.stopPropagation();
                   onClick(listing);
                 }}
-                className="w-full py-1.5 rounded-lg bg-[#141f35] hover:bg-blue-600 text-slate-200 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 border border-[#22334e] hover:border-blue-500 transition active:scale-95"
+                className="w-full py-1 sm:py-1.5 rounded-lg bg-[#141f35] hover:bg-blue-600 text-slate-200 hover:text-white font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1 border border-[#22334e] hover:border-blue-500 transition active:scale-95"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-400 group-hover:text-white" />
-                <span>Купить с Полка Защитой</span>
+                <ShieldCheck className="w-3 h-3 text-blue-400 group-hover:text-white" />
+                <span>Купить с защитой</span>
               </button>
             )}
           </div>
