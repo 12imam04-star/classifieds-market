@@ -12,11 +12,12 @@ import {
   User as UserIcon,
   X,
   LayoutGrid,
-  CheckCircle2,
-  Sparkles
+  Sparkles,
+  Zap,
+  ShoppingBag
 } from 'lucide-react';
-import { CITIES, CATEGORIES, INITIAL_NOTIFICATIONS } from '../data/mockData';
-import { NotificationItem } from '../types';
+import { CITIES, INITIAL_NOTIFICATIONS, CLASSIC_CATEGORIES, DIGITAL_CATEGORIES } from '../data/mockData';
+import { NotificationItem, StorefrontMode } from '../types';
 
 interface HeaderProps {
   searchQuery: string;
@@ -32,6 +33,9 @@ interface HeaderProps {
   onSelectCategory: (catId: string) => void;
   isDark: boolean;
   onToggleTheme: () => void;
+  // Hybrid Storefront Mode
+  storefrontMode: StorefrontMode;
+  onModeChange: (mode: StorefrontMode) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -48,6 +52,8 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectCategory,
   isDark,
   onToggleTheme,
+  storefrontMode,
+  onModeChange,
 }) => {
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
@@ -60,45 +66,54 @@ export const Header: React.FC<HeaderProps> = ({
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
+  const currentCategories = storefrontMode === 'digital' ? DIGITAL_CATEGORIES : CLASSIC_CATEGORIES;
+
   return (
-    <header className="sticky top-0 z-40 bg-[#0a0f1d]/95 dark:bg-[#0a0f1d]/95 backdrop-blur-xl border-b border-[#1b263b] shadow-2xl transition-colors">
+    <header className="sticky top-0 z-40 bg-[#0a0f1d]/95 backdrop-blur-xl border-b border-[#1b263b] shadow-2xl transition-colors">
       {/* Top micro-bar with utility links */}
       <div className="bg-[#070b16] text-xs text-slate-400 py-1.5 px-4 sm:px-6 border-b border-[#162033]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* City Selector */}
-            <div className="relative">
-              <button
-                onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
-                className="flex items-center gap-1.5 font-medium text-slate-300 hover:text-blue-400 transition"
-              >
-                <MapPin className="w-3.5 h-3.5 text-blue-400" />
-                <span>{selectedCity}</span>
-              </button>
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* City Selector (shown in classic or all mode) */}
+            {storefrontMode !== 'digital' ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
+                  className="flex items-center gap-1.5 font-medium text-slate-300 hover:text-blue-400 transition"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-blue-400" />
+                  <span>{selectedCity}</span>
+                </button>
 
-              {isCityDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-52 bg-[#101726] rounded-2xl shadow-2xl border border-[#1f2d47] py-2 z-50 animate-in fade-in zoom-in-95">
-                  <div className="px-3 py-1.5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
-                    Выберите город
+                {isCityDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-52 bg-[#101726] rounded-2xl shadow-2xl border border-[#1f2d47] py-2 z-50 animate-in fade-in zoom-in-95">
+                    <div className="px-3 py-1.5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
+                      Выберите город
+                    </div>
+                    {CITIES.map((city) => (
+                      <button
+                        key={city}
+                        onClick={() => {
+                          onCityChange(city);
+                          setIsCityDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-blue-600/10 transition ${
+                          selectedCity === city ? 'text-blue-400 font-bold bg-blue-600/15' : 'text-slate-300'
+                        }`}
+                      >
+                        {city}
+                        {selectedCity === city && <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />}
+                      </button>
+                    ))}
                   </div>
-                  {CITIES.map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => {
-                        onCityChange(city);
-                        setIsCityDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-blue-600/10 transition ${
-                        selectedCity === city ? 'text-blue-400 font-bold bg-blue-600/15' : 'text-slate-300'
-                      }`}
-                    >
-                      {city}
-                      {selectedCity === city && <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-semibold">
+                <Zap className="w-3.5 h-3.5" />
+                <span>Цифровой режим • Мгновенная доставка онлайн по всему миру</span>
+              </div>
+            )}
 
             <div className="hidden md:flex items-center gap-3 text-slate-400 text-xs">
               <button
@@ -109,7 +124,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Безопасная сделка (Escrow 100%)</span>
               </button>
               <span>•</span>
-              <span className="text-slate-400">Доставка по всей РФ & Автовыдача</span>
+              <span className="text-slate-400">
+                {storefrontMode === 'digital' ? 'Автовыдача цифровых товаров' : 'Доставка по всей РФ (СДЭК / Boxberry)'}
+              </span>
             </div>
           </div>
 
@@ -138,9 +155,9 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Logo «ПОЛКА PRO» */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             <a href="#" className="flex items-center gap-2.5 group">
-              {/* Modern Cyber Showcase Emblem */}
+              {/* Cyber Showcase Emblem */}
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-all duration-300 border border-blue-400/30">
                 <div className="grid grid-cols-2 gap-1 p-1">
                   <span className="w-2 h-2 rounded-xs bg-white shadow-sm" />
@@ -158,26 +175,64 @@ export const Header: React.FC<HeaderProps> = ({
                     PRO
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-400 -mt-0.5 font-medium tracking-wide">
-                  Витрина объявлений & Маркетплейс
+                <span className="text-[10px] text-slate-400 -mt-0.5 font-medium tracking-wide hidden sm:block">
+                  Гибридный маркетплейс
                 </span>
               </div>
             </a>
 
-            {/* «Все категории» Blue Button */}
+            {/* HYBRID STOREFRONT SWITCHER (Вещи vs Digital) */}
+            <div className="hidden md:flex items-center p-1 rounded-xl bg-[#0c1220] border border-[#1f2d47]">
+              <button
+                onClick={() => onModeChange('classic')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  storefrontMode === 'classic'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Вещи, техника, авто, недвижимость"
+              >
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Вещи & Авто</span>
+              </button>
+
+              <button
+                onClick={() => onModeChange('digital')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  storefrontMode === 'digital'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+                    : 'text-slate-400 hover:text-cyan-400'
+                }`}
+                title="Подписки, аккаунты, ключи, софт"
+              >
+                <Zap className="w-3.5 h-3.5 text-cyan-300" />
+                <span>Digital Хаб</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/30 text-cyan-300 font-extrabold border border-purple-400/40">
+                  HOT
+                </span>
+              </button>
+            </div>
+
+            {/* Catalog Dropdown Button */}
             <div className="relative hidden lg:block">
               <button
                 onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition shadow-lg shadow-blue-600/25 active:scale-95"
+                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition shadow-lg active:scale-95 ${
+                  storefrontMode === 'digital'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-purple-600/25'
+                    : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/25'
+                }`}
               >
                 <LayoutGrid className="w-4 h-4" />
-                Все категории
+                {storefrontMode === 'digital' ? 'Каталог Digital' : 'Все категории'}
               </button>
 
               {isCategoryMenuOpen && (
                 <div className="absolute left-0 mt-2 w-72 bg-[#101726] rounded-2xl shadow-2xl border border-[#1f2d47] p-2 z-50 animate-in fade-in zoom-in-95">
-                  <div className="text-xs font-bold text-slate-400 px-3 py-1.5 uppercase tracking-wider">Каталог товаров и услуг</div>
-                  {CATEGORIES.map((cat) => (
+                  <div className="text-xs font-bold text-slate-400 px-3 py-1.5 uppercase tracking-wider">
+                    {storefrontMode === 'digital' ? 'Каталог подписок и игр' : 'Каталог товаров и услуг'}
+                  </div>
+                  {currentCategories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => {
@@ -197,15 +252,23 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Search Bar */}
+          {/* Search Bar with dynamic placeholder */}
           <div className="flex-1 max-w-2xl relative">
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Поиск по объявлениям (например: iPhone 15 Pro, Квартира...)"
+                placeholder={
+                  storefrontMode === 'digital'
+                    ? "Поиск подписок, ключей, аккаунтов (Telegram, ChatGPT, Steam, CS2)..."
+                    : "Поиск по объявлениям (например: iPhone 15 Pro, Квартира, BMW)..."
+                }
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-11 pr-24 py-2.5 sm:py-3 rounded-2xl bg-[#0f172a] border border-[#1f2d47] text-sm text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition shadow-inner"
+                className={`w-full pl-11 pr-24 py-2.5 sm:py-3 rounded-2xl bg-[#0f172a] border text-sm text-white placeholder-slate-400 focus:outline-none transition shadow-inner ${
+                  storefrontMode === 'digital'
+                    ? 'border-purple-500/40 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20'
+                    : 'border-[#1f2d47] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20'
+                }`}
               />
               <Search className="w-5 h-5 text-slate-400 absolute left-3.5 pointer-events-none" />
               {searchQuery && (
@@ -218,7 +281,11 @@ export const Header: React.FC<HeaderProps> = ({
               )}
               <button 
                 onClick={() => {}}
-                className="absolute right-1.5 px-4 sm:px-5 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-md shadow-blue-600/20"
+                className={`absolute right-1.5 px-4 sm:px-5 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-md ${
+                  storefrontMode === 'digital'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-purple-600/30'
+                    : 'bg-blue-600 hover:bg-blue-500 shadow-blue-600/20'
+                }`}
               >
                 Найти
               </button>
@@ -227,6 +294,20 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* User actions */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Quick Digital Button for Mobile/Tablet */}
+            <button
+              onClick={() => onModeChange(storefrontMode === 'digital' ? 'classic' : 'digital')}
+              className={`md:hidden px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1 transition ${
+                storefrontMode === 'digital'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-[#101726] border border-[#1f2d47] text-cyan-300'
+              }`}
+              title="Переключить режим"
+            >
+              <Zap className="w-4 h-4 text-cyan-300" />
+              <span>{storefrontMode === 'digital' ? 'Вещи' : 'Digital'}</span>
+            </button>
+
             {/* Favorites */}
             <button
               onClick={onOpenFavorites}

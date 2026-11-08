@@ -1,47 +1,40 @@
 import { Listing, Category, NotificationItem } from '../types';
 
-export const CATEGORIES: Category[] = [
+export const CLASSIC_CATEGORIES: Category[] = [
   {
     id: 'all',
-    name: 'Все полки',
+    name: 'Все разделы',
     icon: 'Layers',
-    count: 148,
+    count: 142,
     subcategories: []
   },
   {
     id: 'electronics',
     name: 'Электроника',
     icon: 'Smartphone',
-    count: 42,
+    count: 58,
     subcategories: ['Смартфоны', 'Ноутбуки', 'Компьютеры и комплектующие', 'Телевизоры', 'Аудио']
-  },
-  {
-    id: 'gaming_digital',
-    name: 'Цифровые товары',
-    icon: 'Gamepad2',
-    count: 38,
-    subcategories: ['Ключи и активации', 'Игровые аккаунты', 'Игровая валюта', 'Подписки и софт', 'Скины']
   },
   {
     id: 'real_estate',
     name: 'Недвижимость',
     icon: 'Home',
-    count: 24,
+    count: 32,
     subcategories: ['Квартиры посуточно', 'Долгосрочная аренда', 'Продажа вторички', 'Дома и дачи']
   },
   {
     id: 'auto',
     name: 'Транспорт',
     icon: 'Car',
-    count: 19,
+    count: 24,
     subcategories: ['Автомобили с пробегом', 'Новые авто', 'Мотоциклы', 'Запчасти']
   },
   {
     id: 'services',
     name: 'Услуги',
     icon: 'Wrench',
-    count: 15,
-    subcategories: ['Ремонт техники', 'IT и фриланс', 'Обучение и курсы', 'Грузоперевозки']
+    count: 18,
+    subcategories: ['Ремонт техники', 'Бытовые услуги', 'Обучение и курсы', 'Грузоперевозки']
   },
   {
     id: 'fashion',
@@ -50,6 +43,71 @@ export const CATEGORIES: Category[] = [
     count: 10,
     subcategories: ['Одежда', 'Обувь', 'Аксессуары', 'Часы']
   }
+];
+
+export const DIGITAL_CATEGORIES: Category[] = [
+  {
+    id: 'digital_all',
+    name: 'Все цифровые лоты',
+    icon: 'Zap',
+    count: 94,
+    subcategories: [],
+    isDigitalOnly: true
+  },
+  {
+    id: 'digital_subs',
+    name: 'Подписки и нейросети',
+    icon: 'Sparkles',
+    count: 28,
+    subcategories: ['Telegram Premium', 'ChatGPT Plus & ИИ', 'Spotify Premium', 'VPN сервисы', 'YouTube Premium'],
+    isDigitalOnly: true
+  },
+  {
+    id: 'digital_accounts',
+    name: 'Игровые аккаунты',
+    icon: 'Gamepad2',
+    count: 34,
+    subcategories: ['Steam & CS2', 'Brawl Stars', 'Roblox', 'Genshin Impact', 'Valorant', 'Epic Games'],
+    isDigitalOnly: true
+  },
+  {
+    id: 'digital_currency',
+    name: 'Донат и валюта',
+    icon: 'Coins',
+    count: 18,
+    subcategories: ['Робуксы (Roblox)', 'V-Bucks Fortnite', 'Гемы Brawl Stars', 'Пополнение Steam'],
+    isDigitalOnly: true
+  },
+  {
+    id: 'digital_keys',
+    name: 'Ключи и лицензии',
+    icon: 'Key',
+    count: 14,
+    subcategories: ['Windows 11 / 10', 'Microsoft Office', 'Steam ключи', 'Антивирусы'],
+    isDigitalOnly: true
+  }
+];
+
+export const DIGITAL_PLATFORMS = [
+  'Все платформы',
+  'Steam',
+  'Telegram',
+  'Roblox',
+  'PlayStation',
+  'Xbox',
+  'Brawl Stars',
+  'AI / Нейросети',
+  'Windows / Софт',
+  'Spotify'
+];
+
+export const DIGITAL_REGIONS = [
+  'Все регионы',
+  'Global (Без ограничений)',
+  'Россия и СНГ',
+  'Турция (TR)',
+  'Казахстан (KZ)',
+  'США (US)'
 ];
 
 export const CITIES = [
@@ -67,7 +125,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-1',
     title: 'Безопасная сделка подтверждена',
-    description: 'Оплата по заказу «iPhone 15 Pro Max» заморожена на эскроу-счете. Товар готов к отправке.',
+    description: 'Оплата по заказу «Telegram Premium 12 месяцев» заморожена на эскроу-счете. Автовыдача сработала успешно.',
     time: '5 минут назад',
     type: 'deal',
     read: false
@@ -75,7 +133,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-2',
     title: 'Новый отзыв с оценкой 5.0 ⭐',
-    description: 'Покупатель Максим поблагодарил вас за быструю доставку лота.',
+    description: 'Покупатель Максим поблагодарил вас за мгновенную выдачу ключа активации.',
     time: '1 час назад',
     type: 'system',
     read: false
@@ -83,7 +141,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-3',
     title: 'Лот выставлен на Полку',
-    description: 'Ваше объявление прошло мгновенную модерацию и опубликовано бесплатно.',
+    description: 'Ваш цифровой лот прошел мгновенную проверку и готов к автовыдаче.',
     time: '3 часа назад',
     type: 'system',
     read: true
@@ -91,6 +149,299 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
 ];
 
 export const INITIAL_LISTINGS: Listing[] = [
+  // ===================== ЦИФРОВЫЕ ТОВАРЫ (ПОЛКА DIGITAL) =====================
+  {
+    id: 'item-digital-1',
+    title: 'Telegram Premium на 12 месяцев (Активация подарком / Без входа)',
+    price: 2490,
+    currency: '₽',
+    category: 'digital_subs',
+    subcategory: 'Telegram Premium',
+    city: 'Все города',
+    date: 'Сегодня в 13:40',
+    views: 1850,
+    description: 'Официальная подписка Telegram Premium на 1 год через подарочный сертификат (Gift Link). Вход в ваш аккаунт НЕ требуется! Никаких рисков бана или слета. Гарантия на весь срок действия подписки. Активация за 1-2 минуты после оплаты. Безопасная сделка «Полка Защита»: подтверждаете заказ только тогда, когда у вас загорелась звездочка Premium в профиле.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isVip: true,
+    isDigital: true,
+    platform: 'Telegram',
+    region: 'Global (Без ограничений)',
+    seller: {
+      id: 'seller-dig-1',
+      name: 'KeyStore Official',
+      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',
+      rating: 4.99,
+      reviewsCount: 4320,
+      dealsCount: 6800,
+      isVerified: true,
+      responseTime: 'Мгновенно (автовыдача)',
+      registeredYear: 2021,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Тип товара': 'Подписка Gift Link (Без пароля)',
+      'Срок подписки': '12 месяцев (1 год)',
+      'Платформа': 'Telegram',
+      'Регион': 'Global (Любой аккаунт)',
+      'Выдача': 'Автовыдача за 3 секунды в чат'
+    }
+  },
+  {
+    id: 'item-digital-2',
+    title: 'ChatGPT Plus (GPT-4o) + DALL-E 3 на 1 месяц (Персональный доступ + Почта)',
+    price: 1890,
+    currency: '₽',
+    category: 'digital_subs',
+    subcategory: 'ChatGPT Plus & ИИ',
+    city: 'Все города',
+    date: 'Сегодня в 14:15',
+    views: 1240,
+    description: 'Индивидуальный аккаунт ChatGPT Plus с оплаченной подпиской на 30 дней. Полный доступ к моделям GPT-4o, генератору изображений DALL-E 3, плагинам и анализу данных. Вы получаете логин и пароль от аккаунта и родной почты (первые руки, без соседей). Работает стабильно из любой точки мира. Гарантия замены на весь срок.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isVip: true,
+    isDigital: true,
+    platform: 'AI / Нейросети',
+    region: 'Global (Без ограничений)',
+    seller: {
+      id: 'seller-dig-2',
+      name: 'AI_Market_PRO',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+      rating: 4.97,
+      reviewsCount: 940,
+      dealsCount: 1250,
+      isVerified: true,
+      responseTime: '1 минута',
+      registeredYear: 2022,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Сервис': 'OpenAI ChatGPT Plus',
+      'Модели': 'GPT-4o, DALL-E 3, Voice Mode',
+      'Тип аккаунта': 'Индивидуальный (Личный)',
+      'Гарантия': '30 дней',
+      'Выдача': 'Автовыдача данных в чат'
+    }
+  },
+  {
+    id: 'item-digital-3',
+    title: 'Steam Аккаунт CS2 (Prime статус, 2500+ часов, Медали, Faceit 8 LVL)',
+    price: 14500,
+    currency: '₽',
+    category: 'digital_accounts',
+    subcategory: 'Steam & CS2',
+    city: 'Все города',
+    date: 'Сегодня в 12:10',
+    views: 920,
+    description: 'Личный аккаунт Steam с первой почтой и чеками первых покупок. CS2 Prime статус, рейтинг 18,500 Premier, звание Faceit LVL 8. В инвентаре: нож Bowie Knife Damascus Steel, AK-47 Slate StatTrak, перчатки. Мгновенная передача данных через защищенный шлюз платформы ПОЛКА. Деньги холдируются до полной смены почты и пароля покупателем.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isUrgent: true,
+    isDigital: true,
+    platform: 'Steam',
+    region: 'Россия и СНГ',
+    seller: {
+      id: 'seller-dig-3',
+      name: 'DigitalShop Prime',
+      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=200&q=80',
+      rating: 4.98,
+      reviewsCount: 1420,
+      dealsCount: 1890,
+      isVerified: true,
+      responseTime: 'Мгновенно',
+      registeredYear: 2020,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Платформа': 'Steam',
+      'Игры': 'Counter-Strike 2 (Prime), GTA V',
+      'Родная почта': 'Да, полная передача',
+      'Гарантия': 'Пожизненная',
+      'Регион': 'Россия и СНГ'
+    }
+  },
+  {
+    id: 'item-digital-4',
+    title: 'Roblox Робуксы 2 000 R$ (Моментальный трансфер через Gamepass / С компенсацией комиссии)',
+    price: 1490,
+    currency: '₽',
+    category: 'digital_currency',
+    subcategory: 'Робуксы (Roblox)',
+    city: 'Все города',
+    date: 'Сегодня в 15:00',
+    views: 2100,
+    description: 'Покупка 2 000 Robux чистым трансфером через покупку вашего геймпасса. Налог Roblox 30% полностью покрывается за мой счет (вы получаете ровно 2 000 R$ чистыми на баланс!). Белый метод, никаких списаний или банов. Быстрая инструкция в чате.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isDigital: true,
+    platform: 'Roblox',
+    region: 'Global (Без ограничений)',
+    seller: {
+      id: 'seller-dig-4',
+      name: 'RobloxHub 24/7',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      rating: 4.96,
+      reviewsCount: 3100,
+      dealsCount: 4800,
+      isVerified: true,
+      responseTime: '3 минуты',
+      registeredYear: 2021,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Игра': 'Roblox',
+      'Количество': '2 000 Robux чистыми',
+      'Способ передачи': 'Gamepass transfer',
+      'Налог 30%': 'Покрывается продавцом',
+      'Безопасность': '100% Escrow Гарант'
+    }
+  },
+  {
+    id: 'item-digital-5',
+    title: 'Brawl Stars Аккаунт (42 000 кубков, 72 бойца, 15 гиперзарядов, Эксклюзивные скины)',
+    price: 3490,
+    currency: '₽',
+    category: 'digital_accounts',
+    subcategory: 'Brawl Stars',
+    city: 'Все города',
+    date: 'Сегодня в 11:20',
+    views: 1650,
+    description: 'Прокачанный личный аккаунт Brawl Stars с полной перепривязкой Supercell ID на вашу почту. 42k кубков, 72 бойца, множество редких архивных скинов (Звездная Шелли, Феникс Ворон, Меха Ворон). Перепривязка в прямом эфире в чате «Полка Защита».',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isDigital: true,
+    platform: 'Brawl Stars',
+    region: 'Global (Без ограничений)',
+    seller: {
+      id: 'seller-dig-5',
+      name: 'Supercell Trader',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      rating: 4.94,
+      reviewsCount: 512,
+      dealsCount: 680,
+      isVerified: true,
+      responseTime: '5 минут',
+      registeredYear: 2022,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Кубки': '42 000+',
+      'Бойцы': '72 из 78',
+      'Привязка': 'Supercell ID на вашу почту',
+      'Скины': 'Более 140 скинов',
+      'Гарантия': 'Бессрочная'
+    }
+  },
+  {
+    id: 'item-digital-6',
+    title: 'Spotify Premium на 12 месяцев (Индивидуальный тариф / Без слетов / Любой аккаунт)',
+    price: 1290,
+    currency: '₽',
+    category: 'digital_subs',
+    subcategory: 'Spotify Premium',
+    city: 'Все города',
+    date: 'Сегодня в 10:00',
+    views: 890,
+    description: 'Индивидуальная премиум-подписка Spotify на 1 год. Никаких семейных групп и риска слета. Высочайшее качество звука (Very High 320 kbps), скачивание треков офлайн, отсутствие рекламы. Активируем на ваш существующий аккаунт с сохранением всех плейлистов или выдаем готовый.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isDigital: true,
+    platform: 'Spotify',
+    region: 'Турция (TR)',
+    seller: {
+      id: 'seller-dig-1',
+      name: 'KeyStore Official',
+      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',
+      rating: 4.99,
+      reviewsCount: 4320,
+      dealsCount: 6800,
+      isVerified: true,
+      responseTime: 'Мгновенно (автовыдача)',
+      registeredYear: 2021,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Сервис': 'Spotify Premium Individual',
+      'Длительность': '12 месяцев',
+      'Качество': '320 kbps Lossless ready',
+      'Сохранение треков': 'Да, все плейлисты остаются',
+      'Гарантия': '365 дней'
+    }
+  },
+  {
+    id: 'item-digital-7',
+    title: 'Windows 11 Pro / 10 Pro Retail Ключ активации (Бессрочная онлайн-лицензия)',
+    price: 490,
+    currency: '₽',
+    category: 'digital_keys',
+    subcategory: 'Windows 11 / 10',
+    city: 'Все города',
+    date: 'Сегодня в 09:30',
+    views: 2400,
+    description: 'Оригинальный 25-значный лицензионный ключ активации Windows 11 Pro / Windows 10 Pro. Тип лицензии: Retail (привязывается к учетной записи Microsoft и материнской плате, не слетает при переустановке ОС). Официальная онлайн-активация с серверов Microsoft. Автовыдача ключа сразу после оплаты в чат заказа.',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80'
+    ],
+    condition: 'digital',
+    isSafeDeal: true,
+    deliveryType: 'instant_digital',
+    isDigital: true,
+    platform: 'Windows / Софт',
+    region: 'Global (Без ограничений)',
+    seller: {
+      id: 'seller-dig-2',
+      name: 'AI_Market_PRO',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+      rating: 4.97,
+      reviewsCount: 940,
+      dealsCount: 1250,
+      isVerified: true,
+      responseTime: 'Автовыдача 0 сек',
+      registeredYear: 2022,
+      onlineStatus: 'online'
+    },
+    specs: {
+      'Продукт': 'Windows 11 Pro (или Win 10 Pro)',
+      'Тип ключа': 'Retail (Бессрочная лицензия)',
+      'Язык': 'Мультиязычная (русский есть)',
+      'Разрядность': 'x32 / x64',
+      'Выдача': 'Мгновенно в чат заказа'
+    }
+  },
+
+  // ===================== ФИЗИЧЕСКИЕ ТОВАРЫ (ГОРОДСКАЯ ВИTРИНА) =====================
   {
     id: 'item-1',
     title: 'Apple iPhone 15 Pro Max 256GB Titanium Blue (Идеальное состояние)',
@@ -112,6 +463,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     isSafeDeal: true,
     deliveryType: 'delivery',
     isVip: true,
+    isDigital: false,
     seller: {
       id: 'seller-1',
       name: 'Алексей Мельников',
@@ -130,44 +482,6 @@ export const INITIAL_LISTINGS: Listing[] = [
       'Цвет': 'Blue Titanium',
       'АКБ': '98%',
       'Комплект': 'Полный комплект'
-    }
-  },
-  {
-    id: 'item-2',
-    title: 'Steam Аккаунт CS2 (Prime, 2500+ часов, Медали, Инвентарь на 30k ₽)',
-    price: 14500,
-    currency: '₽',
-    category: 'gaming_digital',
-    subcategory: 'Игровые аккаунты',
-    city: 'Все города',
-    date: 'Сегодня в 21:10',
-    views: 520,
-    description: 'Личный аккаунт Steam с первой почтой и чеками первых покупок. CS2 Prime статус, рейтинг 18,500 Premier, звание Faceit LVL 8. В инвентаре: нож Bowie Knife Damascus Steel, AK-47 Slate StatTrak, перчатки. Мгновенная передача данных через защищенный шлюз платформы ПОЛКА. Деньги холдируются до полной смены почты и пароля покупателем.',
-    images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80'
-    ],
-    condition: 'digital',
-    isSafeDeal: true,
-    deliveryType: 'instant_digital',
-    isUrgent: true,
-    seller: {
-      id: 'seller-2',
-      name: 'DigitalShop Prime',
-      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=200&q=80',
-      rating: 4.98,
-      reviewsCount: 1420,
-      dealsCount: 1890,
-      isVerified: true,
-      responseTime: 'Мгновенно (автовыдача)',
-      registeredYear: 2020,
-      onlineStatus: 'online'
-    },
-    specs: {
-      'Тип товара': 'Цифровой аккаунт с перепривязкой',
-      'Игры': 'Counter-Strike 2, Cyberpunk 2077, GTA V',
-      'Гарантия': 'Пожизненная с первой почтой',
-      'Способ передачи': 'Автоматическая выдача в чат'
     }
   },
   {
@@ -191,6 +505,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     isSafeDeal: true,
     deliveryType: 'pickup',
     isVip: true,
+    isDigital: false,
     seller: {
       id: 'seller-3',
       name: 'Екатерина Власова',
@@ -230,6 +545,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     condition: 'perfect',
     isSafeDeal: true,
     deliveryType: 'delivery',
+    isDigital: false,
     seller: {
       id: 'seller-4',
       name: 'Максим Смирнов',
@@ -247,44 +563,6 @@ export const INITIAL_LISTINGS: Listing[] = [
       'Привод': 'Ultra HD Blu-ray',
       'Комплектация': '2 джойстика + док-станция',
       'Состояние': 'Идеальное'
-    }
-  },
-  {
-    id: 'item-5',
-    title: 'Telegram Premium на 12 месяцев (Активация подарком / Без входа)',
-    price: 2490,
-    currency: '₽',
-    category: 'gaming_digital',
-    subcategory: 'Подписки и софт',
-    city: 'Все города',
-    date: 'Сегодня в 22:00',
-    views: 1420,
-    description: 'Официальная подписка Telegram Premium на 1 год через подарочный сертификат (Gift Link). Вход в ваш аккаунт НЕ требуется! Никаких рисков бана или слета. Гарантия на весь срок действия подписки. Активация за 1-2 минуты после оплаты. Безопасная сделка «Полка Защита»: подтверждаете заказ только тогда, когда у вас загорелась звездочка Premium в профиле.',
-    images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80'
-    ],
-    condition: 'digital',
-    isSafeDeal: true,
-    deliveryType: 'instant_digital',
-    isVip: true,
-    seller: {
-      id: 'seller-5',
-      name: 'KeyStore Official',
-      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',
-      rating: 4.99,
-      reviewsCount: 4320,
-      dealsCount: 6800,
-      isVerified: true,
-      responseTime: '1 минута',
-      registeredYear: 2018,
-      onlineStatus: 'online'
-    },
-    specs: {
-      'Срок подписки': '12 месяцев (1 год)',
-      'Способ подключения': 'Подарочная ссылка (без передачи логина и пароля)',
-      'Поддерживаемые регионы': 'Любой регион (RU, CIS, EU, US)',
-      'Гарантия': '365 дней'
     }
   },
   {
@@ -306,6 +584,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     isSafeDeal: false,
     deliveryType: 'pickup',
     isVip: true,
+    isDigital: false,
     seller: {
       id: 'seller-6',
       name: 'Руслан Каримов',
@@ -345,6 +624,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     condition: 'digital',
     isSafeDeal: true,
     deliveryType: 'instant_digital',
+    isDigital: false,
     seller: {
       id: 'seller-7',
       name: 'DevNova Studio',
@@ -382,6 +662,7 @@ export const INITIAL_LISTINGS: Listing[] = [
     condition: 'new',
     isSafeDeal: true,
     deliveryType: 'delivery',
+    isDigital: false,
     seller: {
       id: 'seller-8',
       name: 'Мария Антонова',

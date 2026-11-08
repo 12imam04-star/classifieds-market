@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Plus, ShieldCheck, Sparkles, Image as ImageIcon } from 'lucide-react';
-import { CATEGORIES, CITIES } from '../data/mockData';
+import { X, Plus, ShieldCheck, Sparkles, Zap, ShoppingBag, Globe, Monitor } from 'lucide-react';
+import { CLASSIC_CATEGORIES, DIGITAL_CATEGORIES, CITIES, DIGITAL_PLATFORMS, DIGITAL_REGIONS } from '../data/mockData';
 import { Listing } from '../types';
 
 interface CreateListingModalProps {
@@ -10,10 +10,10 @@ interface CreateListingModalProps {
 }
 
 const PRESET_SAMPLE_PHOTOS = [
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80',
-  'https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=900&q=80',
-  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80',
   'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80'
 ];
@@ -25,11 +25,14 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  const [listingType, setListingType] = useState<'classic' | 'digital'>('classic');
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('electronics');
   const [price, setPrice] = useState<number | ''>('');
   const [city, setCity] = useState('Москва');
   const [metro, setMetro] = useState('');
+  const [platform, setPlatform] = useState('Steam');
+  const [region, setRegion] = useState('Global (Без ограничений)');
   const [condition, setCondition] = useState<'new' | 'perfect' | 'used' | 'digital'>('perfect');
   const [description, setDescription] = useState('');
   const [isSafeDeal, setIsSafeDeal] = useState(true);
@@ -54,26 +57,35 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
     setImages(images.filter((_, idx) => idx !== index));
   };
 
+  // Fee calculation (transparent 3% fee)
+  const numericPrice = typeof price === 'number' ? price : 0;
+  const sellerPayout = numericPrice > 0 ? Math.round(numericPrice * 0.97) : 0;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
+
+    const isDig = listingType === 'digital';
 
     const newListing: Listing = {
       id: `lot-${Date.now()}`,
       title: title.trim(),
       price: price === '' ? 0 : Number(price),
       currency: '₽',
-      category,
-      city,
-      metro: metro.trim() ? `м. ${metro.trim()}` : undefined,
+      category: isDig ? category : category,
+      city: isDig ? 'Все города' : city,
+      metro: !isDig && metro.trim() ? `м. ${metro.trim()}` : undefined,
       date: 'Только что',
       views: 1,
       description: description.trim() || 'Описание лота не указано продавцом.',
       images: images.length > 0 ? images : [PRESET_SAMPLE_PHOTOS[0]],
-      condition,
+      condition: isDig ? 'digital' : condition,
       isSafeDeal,
-      deliveryType: category === 'gaming_digital' ? 'instant_digital' : 'delivery',
+      deliveryType: isDig ? 'instant_digital' : 'delivery',
       isVip,
+      isDigital: isDig,
+      platform: isDig ? platform : undefined,
+      region: isDig ? region : undefined,
       seller: {
         id: 'current-user',
         name: 'Вы (Продавец на Полке)',
@@ -82,20 +94,29 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
         reviewsCount: 1,
         dealsCount: 1,
         isVerified: true,
-        responseTime: '1 минута',
+        responseTime: isDig ? 'Мгновенно (автовыдача)' : '5 минут',
         registeredYear: 2026,
         onlineStatus: 'online',
       },
-      specs: {
-        'Категория': CATEGORIES.find(c => c.id === category)?.name || 'Разное',
-        'Состояние': condition === 'new' ? 'Новое' : condition === 'perfect' ? 'Идеальное' : condition === 'used' ? 'Б/У' : 'Цифровой товар',
-        'Размещение': isVip ? 'VIP Полка' : 'Бесплатное размещение'
+      specs: isDig ? {
+        'Тип товара': 'Цифровой лот (ПОЛКА Digital)',
+        'Платформа': platform,
+        'Регион': region,
+        'Способ передачи': 'Мгновенная автовыдача в чат'
+      } : {
+        'Категория': CLASSIC_CATEGORIES.find(c => c.id === category)?.name || 'Товары',
+        'Состояние': condition === 'new' ? 'Новое' : condition === 'perfect' ? 'Идеальное' : 'Б/У',
+        'Размещение': isVip ? 'VIP Полка' : 'Бесплатное'
       }
     };
 
     onCreated(newListing);
     onClose();
   };
+
+  const categoriesList = listingType === 'digital'
+    ? DIGITAL_CATEGORIES.filter(c => c.id !== 'digital_all')
+    : CLASSIC_CATEGORIES.filter(c => c.id !== 'all');
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in">
@@ -110,7 +131,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               Разместить объявление на Полке
             </h2>
             <p className="text-xs text-slate-400">
-              Бесплатная публикация лота за пару кликов
+              Выберите тип лота: физический товар или цифровой (подписки, ключи, аккаунты)
             </p>
           </div>
           <button
@@ -123,22 +144,67 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
 
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+          
+          {/* TYPE SELECTOR (Hybrid separation) */}
+          <div className="space-y-1.5">
+            <label className="font-bold text-slate-200">
+              Тип витрины / размещения
+            </label>
+            <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#0c1220] border border-[#1f2d47]">
+              <button
+                type="button"
+                onClick={() => {
+                  setListingType('classic');
+                  setCategory('electronics');
+                }}
+                className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition ${
+                  listingType === 'classic'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>🏬 Вещи, Техника, Авто</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setListingType('digital');
+                  setCategory('digital_subs');
+                }}
+                className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition ${
+                  listingType === 'digital'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+                    : 'text-slate-400 hover:text-cyan-300'
+                }`}
+              >
+                <Zap className="w-4 h-4 text-cyan-300" />
+                <span>⚡ Digital (Подписки, Игры, Ключи)</span>
+              </button>
+            </div>
+          </div>
+
           {/* Title */}
           <div className="space-y-1.5">
             <label className="font-semibold text-slate-200">
-              Название объявления / лота <span className="text-rose-500">*</span>
+              Название лота <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               required
-              placeholder="Например: Ноутбук MacBook Air M2 или Квартира у парка"
+              placeholder={
+                listingType === 'digital'
+                  ? "Например: Telegram Premium 12 месяцев (Gift Link) или Steam CS2 Prime"
+                  : "Например: Ноутбук MacBook Air M2 16/256 или iPhone 15 Pro"
+              }
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
             />
           </div>
 
-          {/* Category & City row */}
+          {/* Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="font-semibold text-slate-200">
@@ -149,7 +215,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               >
-                {CATEGORIES.filter(c => c.id !== 'all').map((c) => (
+                {categoriesList.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
@@ -157,42 +223,106 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               </select>
             </div>
 
+            {/* If Digital: Platform selection / If Classic: City selection */}
+            {listingType === 'digital' ? (
+              <div className="space-y-1.5">
+                <label className="font-semibold text-slate-200 flex items-center gap-1">
+                  <Monitor className="w-3.5 h-3.5 text-purple-400" />
+                  Платформа / Сервис
+                </label>
+                <select
+                  value={platform}
+                  onChange={(e) => setPlatform(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-purple-500"
+                >
+                  {DIGITAL_PLATFORMS.filter(p => p !== 'Все платформы').map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="space-y-1.5">
+                <label className="font-semibold text-slate-200">
+                  Город размещения
+                </label>
+                <select
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
+                >
+                  {CITIES.filter(c => c !== 'Все города').map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+
+          {/* If Digital: Region & Delivery / If Classic: Metro & Condition */}
+          {listingType === 'digital' ? (
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-200">
-                Город размещения
+              <label className="font-semibold text-slate-200 flex items-center gap-1">
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                Регион активации
               </label>
               <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-cyan-500"
               >
-                {CITIES.filter(c => c !== 'Все города').map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                {DIGITAL_REGIONS.filter(r => r !== 'Все регионы').map((r) => (
+                  <option key={r} value={r}>
+                    {r}
                   </option>
                 ))}
               </select>
             </div>
-          </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="font-semibold text-slate-200">
+                  Метро / Район
+                </label>
+                <input
+                  type="text"
+                  placeholder="Например: Арбатская или Центр"
+                  value={metro}
+                  onChange={(e) => setMetro(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
 
-          {/* Metro & Price row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <label className="font-semibold text-slate-200">
-                Метро / Район (необязательно)
-              </label>
-              <input
-                type="text"
-                placeholder="Например: Арбатская или Центр"
-                value={metro}
-                onChange={(e) => setMetro(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
-              />
+              <div className="space-y-1.5">
+                <label className="font-semibold text-slate-200">
+                  Состояние товара
+                </label>
+                <select
+                  value={condition}
+                  onChange={(e) => setCondition(e.target.value as any)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="new">Новое (в упаковке)</option>
+                  <option value="perfect">Идеальное / Близко к новому</option>
+                  <option value="used">Б/У</option>
+                </select>
+              </div>
             </div>
+          )}
 
+          {/* Price & Seller Earnings Calculator */}
+          <div className="space-y-2">
             <div className="space-y-1.5">
-              <label className="font-semibold text-slate-200">
-                Цена (₽) <span className="text-slate-400 font-normal">(0 = Бесплатно / Даром)</span>
+              <label className="font-semibold text-slate-200 flex items-center justify-between">
+                <span>Цена продажи (₽)</span>
+                {numericPrice > 0 && (
+                  <span className="text-emerald-400 font-bold text-xs">
+                    Вы получите: {sellerPayout.toLocaleString('ru-RU')} ₽ (комиссия всего 3%)
+                  </span>
+                )}
               </label>
               <input
                 type="number"
@@ -203,40 +333,20 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                 className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
               />
             </div>
-          </div>
 
-          {/* Condition */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-slate-200">
-              Состояние
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { id: 'new', label: 'Новое' },
-                { id: 'perfect', label: 'Идеальное' },
-                { id: 'used', label: 'Б/У' },
-                { id: 'digital', label: 'Цифровой' }
-              ].map((c) => (
-                <button
-                  type="button"
-                  key={c.id}
-                  onClick={() => setCondition(c.id as any)}
-                  className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition ${
-                    condition === c.id
-                      ? 'border-blue-500 bg-blue-600/20 text-blue-300 font-bold'
-                      : 'border-[#1f2d47] bg-[#0c1220] text-slate-300 hover:bg-[#162035]'
-                  }`}
-                >
-                  {c.label}
-                </button>
-              ))}
-            </div>
+            {/* Transparent commission fee banner */}
+            {listingType === 'digital' && numericPrice > 0 && (
+              <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-[11px] text-emerald-300 flex items-center justify-between">
+                <span>На ПОЛКЕ ваша выплата: <strong>{sellerPayout.toLocaleString('ru-RU')} ₽</strong> (комиссия всего 3%)</span>
+                <span className="text-slate-400">На других площадках списывают до 20-25%</span>
+              </div>
+            )}
           </div>
 
           {/* Photos */}
           <div className="space-y-2">
             <label className="font-semibold text-slate-200 flex items-center justify-between">
-              <span>Фотографии лота</span>
+              <span>Изображение лота</span>
               <span className="text-xs text-slate-400 font-normal">Добавлено: {images.length}</span>
             </label>
 
@@ -275,8 +385,8 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 overflow-x-auto text-xs text-slate-400 pt-1">
-              <span>Или выберите образец:</span>
-              {PRESET_SAMPLE_PHOTOS.slice(1, 4).map((preset, idx) => (
+              <span>Или выберите готовый образец:</span>
+              {PRESET_SAMPLE_PHOTOS.slice(0, 4).map((preset, idx) => (
                 <button
                   type="button"
                   key={idx}
@@ -296,7 +406,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
             </label>
             <textarea
               rows={3}
-              placeholder="Расскажите подробнее о товаре, комплектации, причинах продажи и нюансах..."
+              placeholder="Расскажите подробнее о товаре, комплектации, способе передачи или гарантиях..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c1220] border border-[#1f2d47] text-white focus:outline-none focus:border-blue-500"
@@ -309,7 +419,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span className="font-semibold text-slate-200">
-                  Включить «Полка Защиту» (Escrow-гарант)
+                  Включить «Полка Защиту» (100% Escrow Гарант)
                 </span>
               </div>
               <input
@@ -343,10 +453,16 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
           <div className="pt-3">
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-sm shadow-lg shadow-indigo-600/30 transition transform active:scale-95 flex items-center justify-center gap-2"
+              className={`w-full py-3.5 px-4 rounded-2xl text-white font-black text-sm shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 ${
+                listingType === 'digital'
+                  ? 'bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:opacity-95 shadow-purple-600/30'
+                  : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-indigo-600/30'
+              }`}
             >
               <Plus className="w-5 h-5" />
-              <span>Поставить на Полку бесплатно</span>
+              <span>
+                {listingType === 'digital' ? 'Поставить в ПОЛКА Digital' : 'Разместить на Полке бесплатно'}
+              </span>
             </button>
           </div>
         </form>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Filter, RotateCcw, ShieldCheck, ArrowUpDown } from 'lucide-react';
-import { CITIES } from '../data/mockData';
+import { Filter, RotateCcw, ShieldCheck, ArrowUpDown, Zap, Globe, Monitor } from 'lucide-react';
+import { CITIES, DIGITAL_PLATFORMS, DIGITAL_REGIONS } from '../data/mockData';
 import { FilterState } from '../types';
 
 interface FilterSidebarProps {
@@ -16,19 +16,21 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onReset,
   totalFound,
 }) => {
+  const isDigital = filters.storefrontMode === 'digital';
+
   return (
     <div className="bg-[#101726] rounded-2xl border border-[#1f2d47] p-4 sm:p-5 shadow-xl space-y-5">
       <div className="flex items-center justify-between pb-3 border-b border-[#1f2d47]">
         <div className="flex items-center gap-2 font-bold text-white text-sm">
-          <Filter className="w-4 h-4 text-blue-400" />
-          <span>Фильтры</span>
+          <Filter className={`w-4 h-4 ${isDigital ? 'text-purple-400' : 'text-blue-400'}`} />
+          <span>{isDigital ? 'Фильтры Digital' : 'Фильтры'}</span>
           <span className="text-xs font-normal text-slate-400 bg-[#162035] px-2 py-0.5 rounded-full border border-[#22324e]">
             {totalFound}
           </span>
         </div>
         <button
           onClick={onReset}
-          className="text-xs text-slate-400 hover:text-blue-400 flex items-center gap-1 transition"
+          className={`text-xs text-slate-400 hover:${isDigital ? 'text-purple-400' : 'text-blue-400'} flex items-center gap-1 transition`}
         >
           <RotateCcw className="w-3 h-3" />
           Сбросить
@@ -38,7 +40,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Sort By */}
       <div className="space-y-1.5">
         <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-          <ArrowUpDown className="w-3 h-3 text-blue-400" />
+          <ArrowUpDown className={`w-3 h-3 ${isDigital ? 'text-purple-400' : 'text-blue-400'}`} />
           Сортировка
         </label>
         <select
@@ -53,23 +55,118 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </select>
       </div>
 
-      {/* City */}
-      <div className="space-y-1.5">
-        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-          Город / локация
-        </label>
-        <select
-          value={filters.city}
-          onChange={(e) => onChange({ city: e.target.value })}
-          className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-blue-500 transition"
-        >
-          {CITIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* DIGITAL SPECIFIC FILTERS */}
+      {isDigital ? (
+        <>
+          {/* Platform Filter */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <Monitor className="w-3 h-3 text-purple-400" />
+              Платформа / Сервис
+            </label>
+            <select
+              value={filters.digitalPlatform || 'Все платформы'}
+              onChange={(e) => onChange({ digitalPlatform: e.target.value === 'Все платформы' ? undefined : e.target.value })}
+              className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-purple-500 transition"
+            >
+              {DIGITAL_PLATFORMS.map((plat) => (
+                <option key={plat} value={plat}>
+                  {plat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Region Filter */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <Globe className="w-3 h-3 text-cyan-400" />
+              Регион активации
+            </label>
+            <select
+              value={filters.digitalRegion || 'Все регионы'}
+              onChange={(e) => onChange({ digitalRegion: e.target.value === 'Все регионы' ? undefined : e.target.value })}
+              className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-cyan-500 transition"
+            >
+              {DIGITAL_REGIONS.map((reg) => (
+                <option key={reg} value={reg}>
+                  {reg}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Instant Delivery Toggle */}
+          <div className="p-3 rounded-xl bg-purple-950/20 border border-purple-500/30">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-200">
+              <input
+                type="checkbox"
+                checked={filters.quickFilter === 'instant'}
+                onChange={(e) => onChange({ quickFilter: e.target.checked ? 'instant' : undefined })}
+                className="w-4 h-4 text-purple-600 rounded bg-[#0c1220] border-[#1f2d47]"
+              />
+              <span className="flex items-center gap-1">
+                <Zap className="w-3.5 h-3.5 text-cyan-300" />
+                Только мгновенная автовыдача (0 сек)
+              </span>
+            </label>
+          </div>
+        </>
+      ) : (
+        /* CLASSIC PHYSICAL GOODS FILTERS */
+        <>
+          {/* City */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              Город / локация
+            </label>
+            <select
+              value={filters.city}
+              onChange={(e) => onChange({ city: e.target.value })}
+              className="w-full px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white focus:outline-none focus:border-blue-500 transition"
+            >
+              {CITIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Condition */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              Состояние
+            </label>
+            <div className="space-y-1 text-xs">
+              {[
+                { id: 'all', label: 'Любое состояние' },
+                { id: 'new', label: 'Новое (в упаковке)' },
+                { id: 'perfect', label: 'Идеальное / Близко к новому' },
+                { id: 'used', label: 'Б/У' },
+              ].map((cond) => (
+                <label
+                  key={cond.id}
+                  className={`flex items-center gap-2.5 p-2 rounded-xl cursor-pointer transition ${
+                    filters.condition === cond.id 
+                      ? 'bg-blue-600/15 text-blue-400 font-semibold' 
+                      : 'text-slate-300 hover:bg-[#162035]'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="condition"
+                    checked={filters.condition === cond.id}
+                    onChange={() => onChange({ condition: cond.id })}
+                    className="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-[#0c1220] border-[#1f2d47]"
+                  />
+                  <span>{cond.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Price Range */}
       <div className="space-y-1.5">
@@ -92,40 +189,6 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onChange={(e) => onChange({ maxPrice: e.target.value ? Number(e.target.value) : undefined })}
             className="w-1/2 px-3 py-2 text-xs sm:text-sm bg-[#0c1220] border border-[#1f2d47] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
           />
-        </div>
-      </div>
-
-      {/* Condition */}
-      <div className="space-y-1.5">
-        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-          Состояние
-        </label>
-        <div className="space-y-1 text-xs">
-          {[
-            { id: 'all', label: 'Любое состояние' },
-            { id: 'new', label: 'Новое (в упаковке)' },
-            { id: 'perfect', label: 'Идеальное / Близко к новому' },
-            { id: 'used', label: 'Б/У' },
-            { id: 'digital', label: 'Цифровой товар / Ключ' },
-          ].map((cond) => (
-            <label
-              key={cond.id}
-              className={`flex items-center gap-2.5 p-2 rounded-xl cursor-pointer transition ${
-                filters.condition === cond.id 
-                  ? 'bg-blue-600/15 text-blue-400 font-semibold' 
-                  : 'text-slate-300 hover:bg-[#162035]'
-              }`}
-            >
-              <input
-                type="radio"
-                name="condition"
-                checked={filters.condition === cond.id}
-                onChange={() => onChange({ condition: cond.id })}
-                className="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-[#0c1220] border-[#1f2d47]"
-              />
-              <span>{cond.label}</span>
-            </label>
-          ))}
         </div>
       </div>
 

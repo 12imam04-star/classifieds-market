@@ -7,7 +7,8 @@ import {
   Zap, 
   Sparkles,
   CheckCircle2,
-  Clock
+  Globe,
+  Monitor
 } from 'lucide-react';
 import { Listing } from '../types';
 
@@ -33,6 +34,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   };
 
   const monthlySplit = listing.price >= 8000 ? Math.round(listing.price / 12).toLocaleString('ru-RU') : null;
+  const isDigital = listing.isDigital || listing.category.startsWith('digital_');
 
   if (viewMode === 'list') {
     return (
@@ -47,6 +49,11 @@ export const ListingCard: React.FC<ListingCardProps> = ({
               alt={listing.title} 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
+            {isDigital && (
+              <span className="absolute top-1 left-1 px-1.5 py-0.5 rounded bg-purple-950/80 border border-purple-500/40 text-cyan-300 text-[9px] font-bold">
+                Digital
+              </span>
+            )}
             {listing.isSafeDeal && (
               <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold">
                 Escrow
@@ -70,17 +77,40 @@ export const ListingCard: React.FC<ListingCardProps> = ({
               {listing.title}
             </h3>
 
-            {listing.isSafeDeal && (
-              <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 text-[10px] font-semibold">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                <span>Полка Защита (Escrow)</span>
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-2 mt-1">
+              {isDigital && listing.platform && (
+                <span className="px-2 py-0.5 rounded bg-blue-600/20 text-cyan-300 border border-blue-500/30 text-[10px] font-bold flex items-center gap-1">
+                  <Monitor className="w-3 h-3" />
+                  {listing.platform}
+                </span>
+              )}
+              {isDigital && listing.region && (
+                <span className="px-2 py-0.5 rounded bg-purple-600/20 text-purple-300 border border-purple-500/30 text-[10px] font-medium flex items-center gap-1">
+                  <Globe className="w-3 h-3" />
+                  {listing.region}
+                </span>
+              )}
+              {listing.isSafeDeal && (
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 text-[10px] font-semibold">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                  <span>Полка Защита (Escrow)</span>
+                </div>
+              )}
+            </div>
 
             <div className="flex items-center gap-3 text-xs text-slate-400 mt-2">
               <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-slate-400" />
-                {listing.city} {listing.metro ? `• ${listing.metro}` : ''}
+                {isDigital ? (
+                  <>
+                    <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Онлайн выдача</span>
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{listing.city} {listing.metro ? `• ${listing.metro}` : ''}</span>
+                  </>
+                )}
               </span>
               <span>•</span>
               <span>{listing.date}</span>
@@ -187,7 +217,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           {listing.deliveryType === 'instant_digital' && (
             <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[10px] font-black shadow-md flex items-center gap-1">
               <Zap className="w-3 h-3 text-cyan-300" />
-              Автовыдача
+              Автовыдача 0 сек
             </span>
           )}
         </div>
@@ -229,6 +259,22 @@ export const ListingCard: React.FC<ListingCardProps> = ({
             {listing.title}
           </h3>
 
+          {/* Digital attributes pills (Platform / Region) */}
+          {isDigital && (listing.platform || listing.region) && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              {listing.platform && (
+                <span className="px-1.5 py-0.5 rounded bg-blue-950/60 border border-blue-500/30 text-cyan-300 text-[10px] font-bold">
+                  {listing.platform}
+                </span>
+              )}
+              {listing.region && (
+                <span className="px-1.5 py-0.5 rounded bg-purple-950/60 border border-purple-500/30 text-purple-300 text-[10px]">
+                  {listing.region}
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Safe Deal badge (Emerald Escrow) */}
           {listing.isSafeDeal && (
             <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">
@@ -241,8 +287,17 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         {/* Location & Seller Footer */}
         <div className="pt-2.5 border-t border-[#1f2d47] text-xs text-slate-400 space-y-1">
           <div className="flex items-center gap-1 truncate">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="truncate">{listing.city} {listing.metro ? `• ${listing.metro}` : ''}</span>
+            {isDigital ? (
+              <div className="flex items-center gap-1 text-cyan-400">
+                <Zap className="w-3 h-3 text-cyan-400 shrink-0" />
+                <span className="truncate text-[11px]">Цифровая передача онлайн</span>
+              </div>
+            ) : (
+              <>
+                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <span className="truncate">{listing.city} {listing.metro ? `• ${listing.metro}` : ''}</span>
+              </>
+            )}
           </div>
 
           <div className="flex items-center justify-between text-[11px] pt-0.5">

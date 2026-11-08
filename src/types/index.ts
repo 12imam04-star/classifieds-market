@@ -11,6 +11,8 @@ export interface Seller {
   onlineStatus: 'online' | 'offline';
 }
 
+export type StorefrontMode = 'classic' | 'digital' | 'all';
+
 export interface Listing {
   id: string;
   title: string;
@@ -31,6 +33,10 @@ export interface Listing {
   isUrgent?: boolean;
   seller: Seller;
   specs: Record<string, string>;
+  // Digital specific attributes
+  isDigital?: boolean;
+  platform?: string; // 'Steam' | 'Telegram' | 'Roblox' | 'PlayStation' | 'Xbox' | 'AI / Сервисы' | 'Windows'
+  region?: string; // 'Global' | 'RU/СНГ' | 'Турция (TR)' | 'Казахстан (KZ)' | 'США (US)'
 }
 
 export interface Category {
@@ -39,6 +45,7 @@ export interface Category {
   icon: string;
   count: number;
   subcategories: string[];
+  isDigitalOnly?: boolean;
 }
 
 export interface FilterState {
@@ -51,6 +58,10 @@ export interface FilterState {
   condition: string;
   sortBy: 'date_desc' | 'price_asc' | 'price_desc' | 'rating_desc';
   quickFilter?: string; // 'safe_deal' | 'instant' | 'free' | 'vip' | 'top_rated'
+  // Hybrid Storefront Mode
+  storefrontMode: StorefrontMode;
+  digitalPlatform?: string;
+  digitalRegion?: string;
 }
 
 export interface Message {
